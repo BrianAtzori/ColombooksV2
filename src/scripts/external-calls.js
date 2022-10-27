@@ -1,3 +1,5 @@
+require('dotenv').config();
+
 import * as showcaseGenerator from './showcase-generator';
 
 //Try & Catch?
@@ -6,7 +8,7 @@ export async function requestToApi(genre){
 
     //Check for better method
 
-    fetch("https://openlibrary.org/subjects/"+genre+".json")
+    fetch(process.env.BASE_URL+"subjects/"+genre+".json")
     .then((response) => response.json())
     .then((data) => showcaseGenerator.generateGUI(data)); //Call verso Data Manager
 }
