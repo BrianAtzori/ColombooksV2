@@ -1,4 +1,5 @@
 require('dotenv').config();
+const axios = require('axios').default;
 
 import * as showcaseGenerator from './showcase-generator';
 
@@ -7,10 +8,17 @@ import * as showcaseGenerator from './showcase-generator';
 export async function requestToApi(genre){
 
     //Check for better method
-
+    /*
     fetch(process.env.BASE_URL+"subjects/"+genre+".json")
     .then((response) => response.json())
-    .then((data) => showcaseGenerator.generateGUI(data)); //Call verso Data Manager
+    .then((data) => showcaseGenerator.generateGUI(data)); //Call verso Data Manager */
+
+    axios({
+        method: 'get',
+        url: process.env.BASE_URL+"subjects/"+genre+".json"
+    })
+    .then((response) => showcaseGenerator.generateGUI(response.data)); //Call verso Data Manager
+
 }
 
 export async function requestToApi2(author){
