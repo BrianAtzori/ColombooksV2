@@ -87,7 +87,6 @@ searchButton.addEventListener('click', () => {
     }  
 });
 
-
 //-------------------------------- Showcase Generator.js ---------------------------------
 
 
