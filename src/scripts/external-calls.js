@@ -1,24 +1,33 @@
+//--------- IMPORTS ---------
+
+import * as showcaseGenerator from './showcase-generator';
+import * as dataManager from './data-manager';
+
+//--------- DECLARATIONS ---------
+
 require('dotenv').config();
 const axios = require('axios').default;
 
-import * as showcaseGenerator from './showcase-generator';
+//--------- FUNCTIONS ---------
 
-//Try & Catch?
+//Generate URLs to fetch
 
-export async function requestToApi(genre){
+function createUrl(queryFields, userQuery)
+{
+    let queryUrl = process.env.BASE_URL+queryFields+"/"+userQuery
 
-    //Check for better method
-    /*
-    fetch(process.env.BASE_URL+"subjects/"+genre+".json")
-    .then((response) => response.json())
-    .then((data) => showcaseGenerator.generateGUI(data)); //Call verso Data Manager */
+    return queryUrl
+}
+
+//Fetch Request to API, searching by genre
+
+export async function findBookByGenre(genre){
 
     axios({
         method: 'get',
-        url: process.env.BASE_URL+"subjects/"+genre+".json"
+        url: createUrl("subjects",genre+".json")
     })
-    .then((response) => showcaseGenerator.generateGUI(response.data)); //Call verso Data Manager
-
+    .then((response) => showcaseGenerator.dataManager.generateBooksCollection(response.data));
 }
 
 export async function requestToApi2(author){

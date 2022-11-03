@@ -4,7 +4,8 @@
 //Loading "Animation"
 //Aggiungiamo un H2 con quello cercato
 //Migliore gestione dei campi ricerca / Gestione ricerca avanzata
-
+//Error if blank/null
+//TryCatch su richieste
 
 
 //--------- IMPORTS ---------
@@ -89,7 +90,7 @@ contentPage.addEventListener('click', function(event){
                 }
             }
             else{
-                externalCalls.requestToApi(genreToSearchInput.value)
+                externalCalls.findBookByGenre(genreToSearchInput.value)
                 genreToSearchInput.value=""
             } 
             break;
