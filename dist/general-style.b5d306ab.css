@@ -41,7 +41,7 @@ p > a {
   color: white;
 }
 
-.info-window {
+.popup-window {
   position: fixed;
   top: 50%;
   left: 50%;
@@ -55,11 +55,11 @@ p > a {
   max-width: 80%;
 }
 
-.info-window.active {
+.popup-window.active {
   transform: translate(-50%, 50%) scale(1);
 }
 
-.info-window-header {
+.popup-window-header {
   padding: 10px 15px;
   display: flex;
   justify-content: space-around;
@@ -67,12 +67,12 @@ p > a {
   border-bottom: 1px solid black;
 }
 
-.info-window-header .info-window-title {
+.popup-window-header .popup-window-title {
   font-size: 1.25rem;
   font-weight: bold;
 }
 
-.info-window-header .info-window-close-button {
+.popup-window-header .popup-window-close-button {
   cursor: pointer;
   border: none;
   outline: none;
@@ -81,7 +81,7 @@ p > a {
   font-size: 1.25rem;
 }
 
-.info-window-body {
+.popup-window-body {
   padding: 10px 15px;
 }
 

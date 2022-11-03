@@ -1,35 +1,31 @@
-//Si può migliorare questa gestione eventi
-
-//Generalize with Pop Up Generator
-
-//Show Info
+//--------- ELEMENTS ---------
 
 const overlayBackground = document.querySelector('#overlay')
 
-export function openInfoWindowPopUp(infoWindowPopUp)
+const popUpWindow = document.querySelector('.popup-window')
+
+
+//--------- FUNCTIONS ---------
+
+export function generatePopUp(popUpType)
 {
-    infoWindowPopUp.classList.add('active')
     overlayBackground.classList.add('active')
+
+    switch(popUpType){
+
+        case 'info':
+            popUpWindow.classList.add('active')
+            break;
+
+        case 'details':
+            popUpWindow.classList.add('active')
+            //popUpWindow.innerText= Book.details.toString()
+            break;
+    }
 }
 
-export function closeInfoWindowPopUp(infoWindowPopUp)
+export function closePopUp()
 {
-    infoWindowPopUp.classList.remove('active')
     overlayBackground.classList.remove('active')
+    popUpWindow.classList.remove('active')
 }
-
-export function openDetailsWindowPopuUp(detailsInfoWindowPopUp)
-{
-    detailsInfoWindowPopUp.classList.add('active')
-    detailsInfoWindowPopUp.innerText= Book.details.toString()
-    overlayBackground.classList.add('active')
-}
-
-export function closeDetailsWindowPopUp(detailsInfoWindowPopUp)
-{
-    detailsInfoWindowPopUp.classList.remove('active')
-    overlayBackground.classList.remove('active')
-}
-
-
-

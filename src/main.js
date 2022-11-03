@@ -1,3 +1,16 @@
+//To Do:
+
+//Details Button
+//Loading "Animation"
+//Aggiungiamo un H2 con quello cercato
+//Migliore gestione dei campi ricerca / Gestione ricerca avanzata
+
+
+
+//--------- IMPORTS ---------
+
+//Styles
+
 import './styles/general-style.scss';
 
 import './styles/header-style.scss';
@@ -6,24 +19,24 @@ import './styles/search-section-style.scss';
 
 import './styles/books-showcase-style.scss';
 
+//Javascript
+
 import * as externalCalls from './scripts/external-calls.js'
 
 import * as popUpManager from './scripts/pop-ups.js'
 
-// ----------------------- Classes.js ------------------------------
 
+//--------- ELEMENTS ---------
 
-//------------------------- Main.js -------------------------------
+const contentPage = document.querySelector('.content-page')
 
-//Info Window Elements
+//Guide Window
 
 const buttonShowInfo = document.querySelector('.icon-info')
 
-const infoWindowPopUp = document.querySelector('.info-window')
+const popUpWindowCloseButton= document.querySelector('.popup-window-close-button')
 
-const infoWindowsCloseButton= document.querySelector('.info-window-close-button')
-
-//Search Elements
+//Base Search Elements
 
 const searchButton = document.querySelector('.search-button')
 
@@ -39,56 +52,47 @@ const advancedSearchAuthorInput = document.querySelector('.author-search-bar')
 
 const advancedSearchTitleInput = document.querySelector('.title-search-bar')
 
-//Showcase Elements
+//Book Showcase Elements
 
 const detailPopUpCloseButton= document.querySelector('.info-window-close-button')
 
-// Loading "Animation"?
 
-// ------------------------ External Calls.js ---------------------------------
+//--------- EVENT LISTENER ---------
 
+contentPage.addEventListener('click', function(event){
+  
+    const targetClicked = event.target
 
+    switch (targetClicked){
 
-// --------------------------- Pop Ups.js -------------------------------
+        case buttonShowInfo:
+            popUpManager.generatePopUp("info");
+            break;
+        
+        case popUpWindowCloseButton:
+            popUpManager.closePopUp()
+            break;
 
-buttonShowInfo.addEventListener('click', ()=>{
-    popUpManager.openInfoWindowPopUp(infoWindowPopUp)
-});
+        case advancedSearchButton:
+            advancedSearchFieldsContainer.classList.add('active')
+            break;  
+        
+        case searchButton:
 
-infoWindowsCloseButton.addEventListener('click', ()=>{
-    popUpManager.closeInfoWindowPopUp(infoWindowPopUp)
-});
+            if(advancedSearchFieldsContainer.classList.contains('active')){
 
-detailPopUpCloseButton.addEventListener('click', () =>{
-    popUpManager.closeDetailsWindowPopUp(infoWindowPopUp)
-})
-
-// ---------------------- Search Section.js -------------------------------
-
-advancedSearchButton.addEventListener('click', ()=>{
-    advancedSearchFieldsContainer.classList.add('active') 
-})
-
-searchButton.addEventListener('click', () => {
-    
-    if(advancedSearchFieldsContainer.classList.contains('active')){
-
-        if(advancedSearchTitleInput.value==""){
-            externalCalls.requestToApi2(advancedSearchAuthorInput.value)
-        }
-        else if(advancedSearchAuthorInput.value=="") {
-            externalCalls.requestToApi4(advancedSearchTitleInput.value)
-        }
+                if(advancedSearchTitleInput.value==""){
+                    externalCalls.requestToApi2(advancedSearchAuthorInput.value)
+                }
+                else if(advancedSearchAuthorInput.value=="") {
+                    externalCalls.requestToApi4(advancedSearchTitleInput.value)
+                }
+            }
+            else{
+                externalCalls.requestToApi(genreToSearchInput.value)
+                genreToSearchInput.value=""
+            } 
+            break;
     }
-    else{
-        externalCalls.requestToApi(genreToSearchInput.value)
-        //Aggiungiamo un H2 con quello cercato?
-        genreToSearchInput.value=""
-    }  
-});
 
-//-------------------------------- Showcase Generator.js ---------------------------------
-
-
-
-//--------------------------------- Showcase Manager.js -------------------------------
+  })

@@ -5965,33 +5965,30 @@ exports.default = Book;
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.closeDetailsWindowPopUp = closeDetailsWindowPopUp;
-exports.closeInfoWindowPopUp = closeInfoWindowPopUp;
-exports.openDetailsWindowPopuUp = openDetailsWindowPopuUp;
-exports.openInfoWindowPopUp = openInfoWindowPopUp;
-//Si può migliorare questa gestione eventi
-
-//Generalize with Pop Up Generator
-
-//Show Info
+exports.closePopUp = closePopUp;
+exports.generatePopUp = generatePopUp;
+//--------- ELEMENTS ---------
 
 var overlayBackground = document.querySelector('#overlay');
-function openInfoWindowPopUp(infoWindowPopUp) {
-  infoWindowPopUp.classList.add('active');
+var popUpWindow = document.querySelector('.popup-window');
+
+//--------- FUNCTIONS ---------
+
+function generatePopUp(popUpType) {
   overlayBackground.classList.add('active');
+  switch (popUpType) {
+    case 'info':
+      popUpWindow.classList.add('active');
+      break;
+    case 'details':
+      popUpWindow.classList.add('active');
+      //popUpWindow.innerText= Book.details.toString()
+      break;
+  }
 }
-function closeInfoWindowPopUp(infoWindowPopUp) {
-  infoWindowPopUp.classList.remove('active');
+function closePopUp() {
   overlayBackground.classList.remove('active');
-}
-function openDetailsWindowPopuUp(detailsInfoWindowPopUp) {
-  detailsInfoWindowPopUp.classList.add('active');
-  detailsInfoWindowPopUp.innerText = Book.details.toString();
-  overlayBackground.classList.add('active');
-}
-function closeDetailsWindowPopUp(detailsInfoWindowPopUp) {
-  detailsInfoWindowPopUp.classList.remove('active');
-  overlayBackground.classList.remove('active');
+  popUpWindow.classList.remove('active');
 }
 },{}],"src/scripts/showcase-manager.js":[function(require,module,exports) {
 "use strict";
@@ -6003,7 +6000,6 @@ exports.showDetails = showDetails;
 var popUpManager = _interopRequireWildcard(require("./pop-ups.js"));
 function _getRequireWildcardCache(nodeInterop) { if (typeof WeakMap !== "function") return null; var cacheBabelInterop = new WeakMap(); var cacheNodeInterop = new WeakMap(); return (_getRequireWildcardCache = function (nodeInterop) { return nodeInterop ? cacheNodeInterop : cacheBabelInterop; })(nodeInterop); }
 function _interopRequireWildcard(obj, nodeInterop) { if (!nodeInterop && obj && obj.__esModule) { return obj; } if (obj === null || typeof obj !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(nodeInterop); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (key !== "default" && Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
-var detailsButtonPopUp = document.querySelector('.info-window');
 function showDetails() {
   console.log("Sono Entrato qui");
   fetch("https://openlibrary.org" + Book.key + ".json").then(function (response) {
@@ -6011,7 +6007,7 @@ function showDetails() {
   }).then(function (data) {
     return Book.details = data;
   });
-  popUpManager.openDetailsWindowPopuUp(detailsButtonPopUp);
+  popUpManager.generatePopUp("details");
 }
 },{"./pop-ups.js":"src/scripts/pop-ups.js"}],"src/scripts/showcase-generator.js":[function(require,module,exports) {
 "use strict";
@@ -6024,14 +6020,16 @@ exports.generateGUI2 = generateGUI2;
 exports.generateGUI3 = generateGUI3;
 exports.generateGUI4 = generateGUI4;
 var _classes = _interopRequireDefault(require("./classes.js"));
-var _showcaseManager = _interopRequireDefault(require("./showcase-manager.js"));
+var _showcaseManager = require("./showcase-manager.js");
 var _externalCalls = require("./external-calls.js");
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 var booksShowcaseDiv = document.querySelector('.books-showcase');
+var detailsButton = "";
 var Zsa = "";
 function generateGUI(datafromAPI) {
   for (var i = 0; i < 12; i++) {
-    console.log(datafromAPI);
+    //console.log(datafromAPI)
+    //Lodash for path? 
     Zsa = new _classes.default(datafromAPI.works[i].title, datafromAPI.works[i].authors[0].name, "https://covers.openlibrary.org/b/id/" + datafromAPI.works[i].cover_id + "-L.jpg", datafromAPI.works[i].key, "");
     console.log("Autore:" + Zsa.author + " Titolo:" + Zsa.title + " i:" + i);
     var newBookContainer = document.createElement('div');
@@ -6048,11 +6046,11 @@ function generateGUI(datafromAPI) {
     var newAuthor = document.createElement('p');
     newAuthor.classList.add('author-label');
     newAuthor.innerText = Zsa.author;
-    var detailsButton = document.createElement('input');
+    detailsButton = document.createElement('input');
     detailsButton.type = 'button';
     detailsButton.value = 'Details';
     detailsButton.classList.add('expand-details-button');
-    detailsButton.addEventListener('click', _showcaseManager.default);
+    detailsButton.onclick = _showcaseManager.showDetails;
     newBookContainer.appendChild(newBookCover);
     newBookContainer.appendChild(newTitle);
     newBookContainer.appendChild(newAuthor);
@@ -6071,7 +6069,9 @@ function generateGUI3(datafromAPI3) {
   console.log(datafromAPI3);
   for (var i = 0; i < 50; i++) {
     Zsa = new _classes.default(datafromAPI3.entries[i].title, "", /*"https://covers.openlibrary.org/b/id/"+datafromAPI3.entries[i].covers[0]+"-L.jpg" -> "TO FIX MISSING COVER*/"assets/img/dummy-cover.jpeg", datafromAPI3.entries[i].key, "");
-    console.log("Autore:" + Zsa.author + " Titolo:" + Zsa.title + " i:" + i);
+
+    //console.log("Autore:"+Zsa.author+" Titolo:"+Zsa.title+" i:"+i)
+
     var newBookContainer = document.createElement('div');
     newBookContainer.classList.add('book-container');
 
@@ -6086,15 +6086,14 @@ function generateGUI3(datafromAPI3) {
     var newAuthor = document.createElement('p');
     newAuthor.classList.add('author-label');
     newAuthor.innerText = Zsa.author;
-    var detailsButton = document.createElement('input');
-    detailsButton.type = 'button';
-    detailsButton.value = 'Details';
-    detailsButton.classList.add('expand-details-button');
-    detailsButton.addEventListener('click', _showcaseManager.default);
+    var _detailsButton = document.createElement('input');
+    _detailsButton.type = 'button';
+    _detailsButton.value = 'Details';
+    _detailsButton.classList.add('expand-details-button');
     newBookContainer.appendChild(newBookCover);
     newBookContainer.appendChild(newTitle);
     newBookContainer.appendChild(newAuthor);
-    newBookContainer.appendChild(detailsButton);
+    newBookContainer.appendChild(_detailsButton);
     booksShowcaseDiv.appendChild(newBookContainer);
 
     //console.log(Book)
@@ -6105,7 +6104,9 @@ function generateGUI4(datafromAPI4) {
   console.log(datafromAPI4);
   for (var i = 0; i < datafromAPI4.docs.length; i++) {
     Zsa = new _classes.default(datafromAPI4.docs[i].title, datafromAPI4.docs[i].author_name, /*"https://covers.openlibrary.org/b/id/"+datafromAPI3.entries[i].covers[0]+"-L.jpg" -> "TO FIX MISSING COVER*/"assets/img/dummy-cover.jpeg", datafromAPI4.docs[i].key, "");
-    console.log("Autore:" + Zsa.author + " Titolo:" + Zsa.title + " i:" + i);
+
+    //console.log("Autore:"+Zsa.author+" Titolo:"+Zsa.title+" i:"+i)
+
     var newBookContainer = document.createElement('div');
     newBookContainer.classList.add('book-container');
 
@@ -6120,15 +6121,15 @@ function generateGUI4(datafromAPI4) {
     var newAuthor = document.createElement('p');
     newAuthor.classList.add('author-label');
     newAuthor.innerText = Zsa.author;
-    var detailsButton = document.createElement('input');
-    detailsButton.type = 'button';
-    detailsButton.value = 'Details';
-    detailsButton.classList.add('expand-details-button');
-    detailsButton.addEventListener('click', _showcaseManager.default);
+    var _detailsButton2 = document.createElement('input');
+    _detailsButton2.type = 'button';
+    _detailsButton2.value = 'Details';
+    _detailsButton2.classList.add('expand-details-button');
+    _detailsButton2.addEventListener('click', _showcaseManager.showDetails);
     newBookContainer.appendChild(newBookCover);
     newBookContainer.appendChild(newTitle);
     newBookContainer.appendChild(newAuthor);
-    newBookContainer.appendChild(detailsButton);
+    newBookContainer.appendChild(_detailsButton2);
     booksShowcaseDiv.appendChild(newBookContainer);
 
     //console.log(Book)
@@ -6265,17 +6266,29 @@ var externalCalls = _interopRequireWildcard(require("./scripts/external-calls.js
 var popUpManager = _interopRequireWildcard(require("./scripts/pop-ups.js"));
 function _getRequireWildcardCache(nodeInterop) { if (typeof WeakMap !== "function") return null; var cacheBabelInterop = new WeakMap(); var cacheNodeInterop = new WeakMap(); return (_getRequireWildcardCache = function (nodeInterop) { return nodeInterop ? cacheNodeInterop : cacheBabelInterop; })(nodeInterop); }
 function _interopRequireWildcard(obj, nodeInterop) { if (!nodeInterop && obj && obj.__esModule) { return obj; } if (obj === null || typeof obj !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(nodeInterop); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (key !== "default" && Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
-// ----------------------- Classes.js ------------------------------
+//To Do:
 
-//------------------------- Main.js -------------------------------
+//Details Button
+//Loading "Animation"
+//Aggiungiamo un H2 con quello cercato
+//Migliore gestione dei campi ricerca / Gestione ricerca avanzata
 
-//Info Window Elements
+//--------- IMPORTS ---------
+
+//Styles
+
+//Javascript
+
+//--------- ELEMENTS ---------
+
+var contentPage = document.querySelector('.content-page');
+
+//Guide Window
 
 var buttonShowInfo = document.querySelector('.icon-info');
-var infoWindowPopUp = document.querySelector('.info-window');
-var infoWindowsCloseButton = document.querySelector('.info-window-close-button');
+var popUpWindowCloseButton = document.querySelector('.popup-window-close-button');
 
-//Search Elements
+//Base Search Elements
 
 var searchButton = document.querySelector('.search-button');
 var genreToSearchInput = document.querySelector('.genre-search-bar');
@@ -6287,48 +6300,38 @@ var advancedSearchFieldsContainer = document.querySelector('.advanced-search-inp
 var advancedSearchAuthorInput = document.querySelector('.author-search-bar');
 var advancedSearchTitleInput = document.querySelector('.title-search-bar');
 
-//Showcase Elements
+//Book Showcase Elements
 
 var detailPopUpCloseButton = document.querySelector('.info-window-close-button');
 
-// Loading "Animation"?
+//--------- EVENT LISTENER ---------
 
-// ------------------------ External Calls.js ---------------------------------
-
-// --------------------------- Pop Ups.js -------------------------------
-
-buttonShowInfo.addEventListener('click', function () {
-  popUpManager.openInfoWindowPopUp(infoWindowPopUp);
-});
-infoWindowsCloseButton.addEventListener('click', function () {
-  popUpManager.closeInfoWindowPopUp(infoWindowPopUp);
-});
-detailPopUpCloseButton.addEventListener('click', function () {
-  popUpManager.closeDetailsWindowPopUp(infoWindowPopUp);
-});
-
-// ---------------------- Search Section.js -------------------------------
-
-advancedSearchButton.addEventListener('click', function () {
-  advancedSearchFieldsContainer.classList.add('active');
-});
-searchButton.addEventListener('click', function () {
-  if (advancedSearchFieldsContainer.classList.contains('active')) {
-    if (advancedSearchTitleInput.value == "") {
-      externalCalls.requestToApi2(advancedSearchAuthorInput.value);
-    } else if (advancedSearchAuthorInput.value == "") {
-      externalCalls.requestToApi4(advancedSearchTitleInput.value);
-    }
-  } else {
-    externalCalls.requestToApi(genreToSearchInput.value);
-    //Aggiungiamo un H2 con quello cercato?
-    genreToSearchInput.value = "";
+contentPage.addEventListener('click', function (event) {
+  var targetClicked = event.target;
+  switch (targetClicked) {
+    case buttonShowInfo:
+      popUpManager.generatePopUp("info");
+      break;
+    case popUpWindowCloseButton:
+      popUpManager.closePopUp();
+      break;
+    case advancedSearchButton:
+      advancedSearchFieldsContainer.classList.add('active');
+      break;
+    case searchButton:
+      if (advancedSearchFieldsContainer.classList.contains('active')) {
+        if (advancedSearchTitleInput.value == "") {
+          externalCalls.requestToApi2(advancedSearchAuthorInput.value);
+        } else if (advancedSearchAuthorInput.value == "") {
+          externalCalls.requestToApi4(advancedSearchTitleInput.value);
+        }
+      } else {
+        externalCalls.requestToApi(genreToSearchInput.value);
+        genreToSearchInput.value = "";
+      }
+      break;
   }
 });
-
-//-------------------------------- Showcase Generator.js ---------------------------------
-
-//--------------------------------- Showcase Manager.js -------------------------------
 },{"./styles/general-style.scss":"src/styles/general-style.scss","./styles/header-style.scss":"src/styles/header-style.scss","./styles/search-section-style.scss":"src/styles/search-section-style.scss","./styles/books-showcase-style.scss":"src/styles/books-showcase-style.scss","./scripts/external-calls.js":"src/scripts/external-calls.js","./scripts/pop-ups.js":"src/scripts/pop-ups.js"}],"../../../../opt/homebrew/lib/node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
@@ -6354,7 +6357,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "61580" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "49828" + '/');
   ws.onmessage = function (event) {
     checkedAssets = {};
     assetsToAccept = [];
