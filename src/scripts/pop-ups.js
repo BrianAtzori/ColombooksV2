@@ -19,7 +19,7 @@ export function generatePopUp(popUpType)
 
         case 'details':
             popUpWindow.classList.add('active')
-            //popUpWindow.innerText= Book.details.toString()
+            popUpWindow.innerText= "Ciao!"
             break;
     }
 }

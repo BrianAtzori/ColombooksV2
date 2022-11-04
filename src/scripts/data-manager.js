@@ -4,6 +4,8 @@ import Book from './classes.js'
 
 import * as showcaseGenerator from './showcase-generator';
 
+import * as externalCallsManager from './external-calls'
+
 //--------- DECLARATIONS ---------
 
 const booksCollection = []
@@ -14,21 +16,19 @@ export function generateBooksCollection(responseFromApi)
 {
     for (let i=0; i < responseFromApi.works.length; i++){
 
-        let generatedBook = generateNewBook(responseFromApi.works[i].title, datafromAPI.works[i].authors[0].name,cover_id+"-L.jpg", datafromAPI.works[i].key,"DETAILS")
+        let newBook = generateNewBook(responseFromApi.works[i].title, responseFromApi.works[i].authors[0].name,responseFromApi.works[i].cover_id, responseFromApi.works[i].key,"BOOK DETAILS NOT AVAIBLE")
 
-        booksCollection.push(generatedBook)
+        booksCollection.push(newBook)
     }
 
     showcaseGenerator.generateNewBooksShowcase(booksCollection)
-
 }
 
-function generateNewBook(){
+function generateNewBook(title, authors,coverId,key,details){
 
-    //obj creation
+    let generatedBook = new Book(title,authors,coverId,key, details)
 
-    //call for cover -> alt generation
+    generatedBook.details = externalCallsManager.fetchBookDescription(key)
 
     return generatedBook
-
 }

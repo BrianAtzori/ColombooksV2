@@ -6,7 +6,10 @@
 //Migliore gestione dei campi ricerca / Gestione ricerca avanzata
 //Error if blank/null
 //TryCatch su richieste
-
+//Lodash for path
+//Pulizia Import/Export
+//Comments on functions
+//Gestire risposta vuota se non trovo libri
 
 //--------- IMPORTS ---------
 

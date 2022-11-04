@@ -1,12 +1,8 @@
 import * as popUpManager from './pop-ups.js'
 
-export function showDetails()
+export function showDetails(bookKey)
 {
-    console.log("Sono Entrato qui")
+    //Unique ID on button to find the book in the collection
     
-    fetch("https://openlibrary.org"+Book.key+".json")
-    .then((response) => response.json())
-    .then((data) => Book.details = data);
-
     popUpManager.generatePopUp("details")
 }

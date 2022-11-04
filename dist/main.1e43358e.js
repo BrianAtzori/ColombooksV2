@@ -191,20 +191,29 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.default = void 0;
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); Object.defineProperty(Constructor, "prototype", { writable: false }); return Constructor; }
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-var Book = /*#__PURE__*/_createClass(
-//Need to be fixed and improved
+var Book = /*#__PURE__*/function () {
+  //Need to be fixed and improved
 
-function Book(title, author, cover, key, details) {
-  _classCallCheck(this, Book);
-  this.title = title;
-  this.author = author;
-  this.cover = cover;
-  this.key = key;
-  this.details = details;
-});
+  function Book(title, author, coverId, key, details) {
+    _classCallCheck(this, Book);
+    this.title = title;
+    this.author = author;
+    this.coverId = coverId;
+    this.key = key;
+    this.details = details;
+  }
+  _createClass(Book, [{
+    key: "retrieveCover",
+    value: function retrieveCover() {
+      var coverUrl = "https://covers.openlibrary.org/b/id/" + this.coverId + "-L.jpg";
+      return coverUrl;
+    }
+  }]);
+  return Book;
+}();
 exports.default = Book;
 },{}],"src/scripts/pop-ups.js":[function(require,module,exports) {
 "use strict";
@@ -229,7 +238,7 @@ function generatePopUp(popUpType) {
       break;
     case 'details':
       popUpWindow.classList.add('active');
-      //popUpWindow.innerText= Book.details.toString()
+      popUpWindow.innerText = "Ciao!";
       break;
   }
 }
@@ -247,13 +256,9 @@ exports.showDetails = showDetails;
 var popUpManager = _interopRequireWildcard(require("./pop-ups.js"));
 function _getRequireWildcardCache(nodeInterop) { if (typeof WeakMap !== "function") return null; var cacheBabelInterop = new WeakMap(); var cacheNodeInterop = new WeakMap(); return (_getRequireWildcardCache = function (nodeInterop) { return nodeInterop ? cacheNodeInterop : cacheBabelInterop; })(nodeInterop); }
 function _interopRequireWildcard(obj, nodeInterop) { if (!nodeInterop && obj && obj.__esModule) { return obj; } if (obj === null || typeof obj !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(nodeInterop); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (key !== "default" && Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
-function showDetails() {
-  console.log("Sono Entrato qui");
-  fetch("https://openlibrary.org" + Book.key + ".json").then(function (response) {
-    return response.json();
-  }).then(function (data) {
-    return Book.details = data;
-  });
+function showDetails(bookKey) {
+  //Unique ID on button to find the book in the collection
+
   popUpManager.generatePopUp("details");
 }
 },{"./pop-ups.js":"src/scripts/pop-ups.js"}],"src/scripts/showcase-generator.js":[function(require,module,exports) {
@@ -262,126 +267,176 @@ function showDetails() {
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.generateGUI = generateGUI;
-exports.generateGUI2 = generateGUI2;
-exports.generateGUI3 = generateGUI3;
-exports.generateGUI4 = generateGUI4;
+exports.generateBookContainer = generateBookContainer;
+exports.generateNewAuthorElement = generateNewAuthorElement;
+exports.generateNewBooksShowcase = generateNewBooksShowcase;
+exports.generateNewCoverElement = generateNewCoverElement;
+exports.generateNewDetailsButtonElement = generateNewDetailsButtonElement;
+exports.generateNewTitleElement = generateNewTitleElement;
 var _classes = _interopRequireDefault(require("./classes.js"));
-var _showcaseManager = require("./showcase-manager.js");
+var showcaseManager = _interopRequireWildcard(require("./showcase-manager.js"));
 var _externalCalls = require("./external-calls.js");
+function _getRequireWildcardCache(nodeInterop) { if (typeof WeakMap !== "function") return null; var cacheBabelInterop = new WeakMap(); var cacheNodeInterop = new WeakMap(); return (_getRequireWildcardCache = function (nodeInterop) { return nodeInterop ? cacheNodeInterop : cacheBabelInterop; })(nodeInterop); }
+function _interopRequireWildcard(obj, nodeInterop) { if (!nodeInterop && obj && obj.__esModule) { return obj; } if (obj === null || typeof obj !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(nodeInterop); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (key !== "default" && Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+//--------- IMPORTS ---------
+
+//--------- ELEMENTS ---------
+
 var booksShowcaseDiv = document.querySelector('.books-showcase');
-var detailsButton = "";
-var Zsa = "";
-function generateGUI(datafromAPI) {
-  for (var i = 0; i < 12; i++) {
-    //console.log(datafromAPI)
-    //Lodash for path? 
-    Zsa = new _classes.default(datafromAPI.works[i].title, datafromAPI.works[i].authors[0].name, "https://covers.openlibrary.org/b/id/" + datafromAPI.works[i].cover_id + "-L.jpg", datafromAPI.works[i].key, "");
-    console.log("Autore:" + Zsa.author + " Titolo:" + Zsa.title + " i:" + i);
-    var newBookContainer = document.createElement('div');
-    newBookContainer.classList.add('book-container');
 
-    //Alt su copertina dinamico?
-    var newBookCover = document.createElement('img');
-    newBookCover.classList.add('book-cover');
-    newBookCover.src = Zsa.cover;
-    newBookCover.style = "width: 80px; height: 100px;";
-    var newTitle = document.createElement('p');
-    newTitle.classList.add('title-label');
-    newTitle.innerText = "\"" + Zsa.title + "\"";
-    var newAuthor = document.createElement('p');
-    newAuthor.classList.add('author-label');
-    newAuthor.innerText = Zsa.author;
-    detailsButton = document.createElement('input');
-    detailsButton.type = 'button';
-    detailsButton.value = 'Details';
-    detailsButton.classList.add('expand-details-button');
-    detailsButton.onclick = _showcaseManager.showDetails;
-    newBookContainer.appendChild(newBookCover);
-    newBookContainer.appendChild(newTitle);
-    newBookContainer.appendChild(newAuthor);
-    newBookContainer.appendChild(detailsButton);
+//--------- FUNCTIONS ---------
+
+function generateNewBooksShowcase(booksCollection) {
+  for (var i = 0; i < booksCollection.length; i++) {
+    var newBookContainer = generateBookContainer(booksCollection[i]);
     booksShowcaseDiv.appendChild(newBookContainer);
-
-    //console.log(Book)
   }
 }
+function generateBookContainer(Book) {
+  var elementsArray = [];
+  var newBookContainer = document.createElement('div');
+  newBookContainer.classList.add('book-container');
 
-function generateGUI2(datafromAPI2) {
-  var authorKey = datafromAPI2.docs[0].key;
-  (0, _externalCalls.requestToApi3)(authorKey);
-}
-function generateGUI3(datafromAPI3) {
-  console.log(datafromAPI3);
-  for (var i = 0; i < 50; i++) {
-    Zsa = new _classes.default(datafromAPI3.entries[i].title, "", /*"https://covers.openlibrary.org/b/id/"+datafromAPI3.entries[i].covers[0]+"-L.jpg" -> "TO FIX MISSING COVER*/"assets/img/dummy-cover.jpeg", datafromAPI3.entries[i].key, "");
+  //This can be done with only one function, maybe creating classes
 
-    //console.log("Autore:"+Zsa.author+" Titolo:"+Zsa.title+" i:"+i)
-
-    var newBookContainer = document.createElement('div');
-    newBookContainer.classList.add('book-container');
-
-    //Alt su copertina dinamico?
-    var newBookCover = document.createElement('img');
-    newBookCover.classList.add('book-cover');
-    newBookCover.src = Zsa.cover;
-    newBookCover.style = "width: 80px; height: 100px;";
-    var newTitle = document.createElement('p');
-    newTitle.classList.add('title-label');
-    newTitle.innerText = Zsa.title;
-    var newAuthor = document.createElement('p');
-    newAuthor.classList.add('author-label');
-    newAuthor.innerText = Zsa.author;
-    var _detailsButton = document.createElement('input');
-    _detailsButton.type = 'button';
-    _detailsButton.value = 'Details';
-    _detailsButton.classList.add('expand-details-button');
-    newBookContainer.appendChild(newBookCover);
-    newBookContainer.appendChild(newTitle);
-    newBookContainer.appendChild(newAuthor);
-    newBookContainer.appendChild(_detailsButton);
-    booksShowcaseDiv.appendChild(newBookContainer);
-
-    //console.log(Book)
+  var newBookCover = generateNewCoverElement(Book.retrieveCover(), Book.title, Book.author);
+  elementsArray.push(newBookCover);
+  var newBookTitle = generateNewTitleElement(Book.title);
+  elementsArray.push(newBookTitle);
+  var newAuthorLabel = generateNewAuthorElement(Book.author);
+  elementsArray.push(newAuthorLabel);
+  var newDetailsButton = generateNewDetailsButtonElement();
+  elementsArray.push(newDetailsButton);
+  for (var i = 0; i < elementsArray.length; i++) {
+    newBookContainer.appendChild(elementsArray[i]);
   }
+  return newBookContainer;
+}
+function generateNewCoverElement(coverUrl, title, author) {
+  var generatedBookCover = document.createElement("img");
+  generatedBookCover.classList.add('book-cover');
+  generatedBookCover.src = coverUrl;
+  generatedBookCover.style = "width: 80px; height: 100px;";
+  generatedBookCover.alt = "Cover of the book " + title + " written by " + author;
+  return generatedBookCover;
+}
+function generateNewTitleElement(title) {
+  var generatedBookTitle = document.createElement('p');
+  generatedBookTitle.classList.add('title-label');
+  generatedBookTitle.innerText = "\"" + title + "\"";
+  return generatedBookTitle;
+}
+function generateNewAuthorElement(author) {
+  var generatedBookAuthor = document.createElement('p');
+  generatedBookAuthor.classList.add('author-label');
+  generatedBookAuthor.innerText = author;
+  return generatedBookAuthor;
+}
+function generateNewDetailsButtonElement(bookKey) {
+  var generatedDetailsButton = document.createElement('input');
+  generatedDetailsButton.type = 'button';
+  generatedDetailsButton.value = 'Details';
+  generatedDetailsButton.classList.add('expand-details-button');
+  generatedDetailsButton.onclick = showcaseManager.showDetails;
+  return generatedDetailsButton;
 }
 
-function generateGUI4(datafromAPI4) {
-  console.log(datafromAPI4);
-  for (var i = 0; i < datafromAPI4.docs.length; i++) {
-    Zsa = new _classes.default(datafromAPI4.docs[i].title, datafromAPI4.docs[i].author_name, /*"https://covers.openlibrary.org/b/id/"+datafromAPI3.entries[i].covers[0]+"-L.jpg" -> "TO FIX MISSING COVER*/"assets/img/dummy-cover.jpeg", datafromAPI4.docs[i].key, "");
+/*export function generateGUI2(datafromAPI2){
+    
+    let authorKey= datafromAPI2.docs[0].key
 
-    //console.log("Autore:"+Zsa.author+" Titolo:"+Zsa.title+" i:"+i)
+    requestToApi3(authorKey)
 
-    var newBookContainer = document.createElement('div');
-    newBookContainer.classList.add('book-container');
+}*/
 
-    //Alt su copertina dinamico?
-    var newBookCover = document.createElement('img');
-    newBookCover.classList.add('book-cover');
-    newBookCover.src = Zsa.cover;
-    newBookCover.style = "width: 80px; height: 100px;";
-    var newTitle = document.createElement('p');
-    newTitle.classList.add('title-label');
-    newTitle.innerText = Zsa.title;
-    var newAuthor = document.createElement('p');
-    newAuthor.classList.add('author-label');
-    newAuthor.innerText = Zsa.author;
-    var _detailsButton2 = document.createElement('input');
-    _detailsButton2.type = 'button';
-    _detailsButton2.value = 'Details';
-    _detailsButton2.classList.add('expand-details-button');
-    _detailsButton2.addEventListener('click', _showcaseManager.showDetails);
-    newBookContainer.appendChild(newBookCover);
-    newBookContainer.appendChild(newTitle);
-    newBookContainer.appendChild(newAuthor);
-    newBookContainer.appendChild(_detailsButton2);
-    booksShowcaseDiv.appendChild(newBookContainer);
+/*export function generateGUI3(datafromAPI3)
+{
+    console.log(datafromAPI3)
 
-    //console.log(Book)
-  }
+    for (let i=0; i < 50; i++)
+    {        
+        Zsa=new Book(datafromAPI3.entries[i].title,"",/*"https://covers.openlibrary.org/b/id/"+datafromAPI3.entries[i].covers[0]+"-L.jpg" -> "TO FIX MISSING COVER "assets/img/dummy-cover.jpeg", datafromAPI3.entries[i].key,"")
+
+
+        let newBookContainer = document.createElement('div')
+        newBookContainer.classList.add('book-container')
+    
+        
+        //Alt su copertina dinamico?
+        let newBookCover = document.createElement('img')
+        newBookCover.classList.add('book-cover')
+        newBookCover.src = Zsa.cover
+        newBookCover.style = "width: 80px; height: 100px;"
+    
+        let newTitle = document.createElement('p')
+        newTitle.classList.add('title-label')
+        newTitle.innerText=Zsa.title
+    
+        let newAuthor = document.createElement('p')
+        newAuthor.classList.add('author-label')
+        newAuthor.innerText = Zsa.author
+    
+        let detailsButton = document.createElement('input')
+        detailsButton.type = 'button'
+        detailsButton.value = 'Details'
+        detailsButton.classList.add('expand-details-button')
+    
+        newBookContainer.appendChild(newBookCover)
+        newBookContainer.appendChild(newTitle)
+        newBookContainer.appendChild(newAuthor)
+        newBookContainer.appendChild(detailsButton)
+    
+        booksShowcaseDiv.appendChild(newBookContainer)
+
+        //console.log(Book)
+    }
 }
+
+export function generateGUI4(datafromAPI4)
+{
+    console.log(datafromAPI4)
+
+    for (let i=0; i < datafromAPI4.docs.length; i++)
+    {        
+        Zsa=new Book(datafromAPI4.docs[i].title,datafromAPI4.docs[i].author_name,/*"https://covers.openlibrary.org/b/id/"+datafromAPI3.entries[i].covers[0]+"-L.jpg" -> "TO FIX MISSING COVER "assets/img/dummy-cover.jpeg", datafromAPI4.docs[i].key,"")
+
+        //console.log("Autore:"+Zsa.author+" Titolo:"+Zsa.title+" i:"+i)
+
+        let newBookContainer = document.createElement('div')
+        newBookContainer.classList.add('book-container')
+    
+        
+        //Alt su copertina dinamico?
+        let newBookCover = document.createElement('img')
+        newBookCover.classList.add('book-cover')
+        newBookCover.src = Zsa.cover
+        newBookCover.style = "width: 80px; height: 100px;"
+    
+        let newTitle = document.createElement('p')
+        newTitle.classList.add('title-label')
+        newTitle.innerText=Zsa.title
+    
+        let newAuthor = document.createElement('p')
+        newAuthor.classList.add('author-label')
+        newAuthor.innerText = Zsa.author
+    
+        let detailsButton = document.createElement('input')
+        detailsButton.type = 'button'
+        detailsButton.value = 'Details'
+        detailsButton.classList.add('expand-details-button')
+        detailsButton.addEventListener('click', showDetails)
+    
+        newBookContainer.appendChild(newBookCover)
+        newBookContainer.appendChild(newTitle)
+        newBookContainer.appendChild(newAuthor)
+        newBookContainer.appendChild(detailsButton)
+    
+        booksShowcaseDiv.appendChild(newBookContainer)
+
+        //console.log(Book)
+    }
+}*/
 },{"./classes.js":"src/scripts/classes.js","./showcase-manager.js":"src/scripts/showcase-manager.js","./external-calls.js":"src/scripts/external-calls.js"}],"src/scripts/data-manager.js":[function(require,module,exports) {
 "use strict";
 
@@ -391,6 +446,7 @@ Object.defineProperty(exports, "__esModule", {
 exports.generateBooksCollection = generateBooksCollection;
 var _classes = _interopRequireDefault(require("./classes.js"));
 var showcaseGenerator = _interopRequireWildcard(require("./showcase-generator"));
+var externalCallsManager = _interopRequireWildcard(require("./external-calls"));
 function _getRequireWildcardCache(nodeInterop) { if (typeof WeakMap !== "function") return null; var cacheBabelInterop = new WeakMap(); var cacheNodeInterop = new WeakMap(); return (_getRequireWildcardCache = function (nodeInterop) { return nodeInterop ? cacheNodeInterop : cacheBabelInterop; })(nodeInterop); }
 function _interopRequireWildcard(obj, nodeInterop) { if (!nodeInterop && obj && obj.__esModule) { return obj; } if (obj === null || typeof obj !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(nodeInterop); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (key !== "default" && Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
@@ -404,19 +460,17 @@ var booksCollection = [];
 
 function generateBooksCollection(responseFromApi) {
   for (var i = 0; i < responseFromApi.works.length; i++) {
-    var _generatedBook = generateNewBook(responseFromApi.works[i].title, datafromAPI.works[i].authors[0].name, cover_id + "-L.jpg", datafromAPI.works[i].key, "DETAILS");
-    booksCollection.push(_generatedBook);
+    var newBook = generateNewBook(responseFromApi.works[i].title, responseFromApi.works[i].authors[0].name, responseFromApi.works[i].cover_id, responseFromApi.works[i].key, "BOOK DETAILS NOT AVAIBLE");
+    booksCollection.push(newBook);
   }
   showcaseGenerator.generateNewBooksShowcase(booksCollection);
 }
-function generateNewBook() {
-  //obj creation
-
-  //call for cover -> alt generation
-
+function generateNewBook(title, authors, coverId, key, details) {
+  var generatedBook = new _classes.default(title, authors, coverId, key, details);
+  generatedBook.details = externalCallsManager.fetchBookDescription(key);
   return generatedBook;
 }
-},{"./classes.js":"src/scripts/classes.js","./showcase-generator":"src/scripts/showcase-generator.js"}],"../../../../opt/homebrew/lib/node_modules/parcel-bundler/src/builtins/_empty.js":[function(require,module,exports) {
+},{"./classes.js":"src/scripts/classes.js","./showcase-generator":"src/scripts/showcase-generator.js","./external-calls":"src/scripts/external-calls.js"}],"../../../../opt/homebrew/lib/node_modules/parcel-bundler/src/builtins/_empty.js":[function(require,module,exports) {
 
 },{}],"../../../../opt/homebrew/lib/node_modules/parcel-bundler/node_modules/process/browser.js":[function(require,module,exports) {
 
@@ -6176,11 +6230,8 @@ var define;
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
+exports.fetchBookDescription = fetchBookDescription;
 exports.findBookByGenre = findBookByGenre;
-exports.requestToApi2 = requestToApi2;
-exports.requestToApi3 = requestToApi3;
-exports.requestToApi4 = requestToApi4;
-var showcaseGenerator = _interopRequireWildcard(require("./showcase-generator"));
 var dataManager = _interopRequireWildcard(require("./data-manager"));
 function _getRequireWildcardCache(nodeInterop) { if (typeof WeakMap !== "function") return null; var cacheBabelInterop = new WeakMap(); var cacheNodeInterop = new WeakMap(); return (_getRequireWildcardCache = function (nodeInterop) { return nodeInterop ? cacheNodeInterop : cacheBabelInterop; })(nodeInterop); }
 function _interopRequireWildcard(obj, nodeInterop) { if (!nodeInterop && obj && obj.__esModule) { return obj; } if (obj === null || typeof obj !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(nodeInterop); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (key !== "default" && Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
@@ -6198,7 +6249,7 @@ var axios = require('axios').default;
 //Generate URLs to fetch
 
 function createUrl(queryFields, userQuery) {
-  var queryUrl = "https://openlibrary.org/" + queryFields + "/" + userQuery;
+  var queryUrl = "https://openlibrary.org/" + queryFields + userQuery;
   return queryUrl;
 }
 
@@ -6214,9 +6265,9 @@ function _findBookByGenre() {
           case 0:
             axios({
               method: 'get',
-              url: createUrl("subjects", genre + ".json")
+              url: createUrl("subjects/", genre + ".json")
             }).then(function (response) {
-              return showcaseGenerator.dataManager.generateBooksCollection(response.data);
+              return dataManager.generateBooksCollection(response.data);
             });
           case 1:
           case "end":
@@ -6227,19 +6278,41 @@ function _findBookByGenre() {
   }));
   return _findBookByGenre.apply(this, arguments);
 }
-function requestToApi2(_x2) {
-  return _requestToApi.apply(this, arguments);
+function fetchBookDescription(_x2) {
+  return _fetchBookDescription.apply(this, arguments);
 }
-function _requestToApi() {
-  _requestToApi = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee2(author) {
+/*export async function requestToApi2(author){
+
+    fetch("https://openlibrary.org/search/authors.json?q="+author)
+    .then((response) => response.json())
+    .then((data) => showcaseGenerator.generateGUI2(data));
+
+}
+
+export async function requestToApi3(authorKey)
+{    
+    fetch("https://openlibrary.org/authors/"+authorKey+"/works.json")
+    .then((response)=> response.json())
+    .then((data) => showcaseGenerator.generateGUI3(data));
+}
+
+export async function requestToApi4(title)
+{    
+    fetch("https://openlibrary.org/search.json?q="+title)
+    .then((response)=> response.json())
+    .then((data) => showcaseGenerator.generateGUI4(data));
+}*/
+function _fetchBookDescription() {
+  _fetchBookDescription = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee2(bookKey) {
     return _regeneratorRuntime().wrap(function _callee2$(_context2) {
       while (1) {
         switch (_context2.prev = _context2.next) {
           case 0:
-            fetch("https://openlibrary.org/search/authors.json?q=" + author).then(function (response) {
-              return response.json();
-            }).then(function (data) {
-              return showcaseGenerator.generateGUI2(data);
+            axios({
+              method: 'get',
+              url: createUrl("", bookKey.substring(1) + ".json")
+            }).then(function (response) {
+              return console.log(response.data.description);
             });
           case 1:
           case "end":
@@ -6248,55 +6321,9 @@ function _requestToApi() {
       }
     }, _callee2);
   }));
-  return _requestToApi.apply(this, arguments);
+  return _fetchBookDescription.apply(this, arguments);
 }
-function requestToApi3(_x3) {
-  return _requestToApi2.apply(this, arguments);
-}
-function _requestToApi2() {
-  _requestToApi2 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee3(authorKey) {
-    return _regeneratorRuntime().wrap(function _callee3$(_context3) {
-      while (1) {
-        switch (_context3.prev = _context3.next) {
-          case 0:
-            fetch("https://openlibrary.org/authors/" + authorKey + "/works.json").then(function (response) {
-              return response.json();
-            }).then(function (data) {
-              return showcaseGenerator.generateGUI3(data);
-            });
-          case 1:
-          case "end":
-            return _context3.stop();
-        }
-      }
-    }, _callee3);
-  }));
-  return _requestToApi2.apply(this, arguments);
-}
-function requestToApi4(_x4) {
-  return _requestToApi3.apply(this, arguments);
-}
-function _requestToApi3() {
-  _requestToApi3 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee4(title) {
-    return _regeneratorRuntime().wrap(function _callee4$(_context4) {
-      while (1) {
-        switch (_context4.prev = _context4.next) {
-          case 0:
-            fetch("https://openlibrary.org/search.json?q=" + title).then(function (response) {
-              return response.json();
-            }).then(function (data) {
-              return showcaseGenerator.generateGUI4(data);
-            });
-          case 1:
-          case "end":
-            return _context4.stop();
-        }
-      }
-    }, _callee4);
-  }));
-  return _requestToApi3.apply(this, arguments);
-}
-},{"./showcase-generator":"src/scripts/showcase-generator.js","./data-manager":"src/scripts/data-manager.js","dotenv":"node_modules/dotenv/lib/main.js","axios":"node_modules/axios/index.js"}],"src/main.js":[function(require,module,exports) {
+},{"./data-manager":"src/scripts/data-manager.js","dotenv":"node_modules/dotenv/lib/main.js","axios":"node_modules/axios/index.js"}],"src/main.js":[function(require,module,exports) {
 "use strict";
 
 require("./styles/general-style.scss");
@@ -6315,6 +6342,10 @@ function _interopRequireWildcard(obj, nodeInterop) { if (!nodeInterop && obj && 
 //Migliore gestione dei campi ricerca / Gestione ricerca avanzata
 //Error if blank/null
 //TryCatch su richieste
+//Lodash for path
+//Pulizia Import/Export
+//Comments on functions
+//Gestire risposta vuota se non trovo libri
 
 //--------- IMPORTS ---------
 
@@ -6400,7 +6431,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "51796" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "50622" + '/');
   ws.onmessage = function (event) {
     checkedAssets = {};
     assetsToAccept = [];
