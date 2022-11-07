@@ -13,6 +13,7 @@
 //Pulizia PopUp
 //Ordinare Libri
 //Gestire descrizione Undefined
+//Gestire copertina undefined
 
 //--------- IMPORTS ---------
 

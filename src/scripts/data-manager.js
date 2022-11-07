@@ -28,7 +28,7 @@ export function generateBooksCollection(responseFromApi, queryType)
         case 'byAuthor':
 
                 for(let i=0; i<responseFromApi.entries.length; i++){
-                     let newBook = generateNewBook(responseFromApi.entries[i].title, responseFromApi.entries[i].authors[0].name,responseFromApi.entries[i].cover_id, responseFromApi.entries[i].key)
+                     let newBook = generateNewBook(responseFromApi.entries[i].title, "Va rivisto perchè non esposto direttamente",responseFromApi.entries[i].covers, responseFromApi.entries[i].key)
                     booksCollection.push(newBook)
 
                     //To Fix Cover and Author Name
