@@ -29,7 +29,7 @@ export async function findBookByGenre(genre){
         method: 'get',
         url: createUrl("/subjects/",genre+".json")
     })
-    .then((response) => dataManager.generateBooksCollection(response.data));
+    .then((response) => dataManager.generateBooksCollection(response.data,"byGenre"));
 }
 
 export async function fetchBookDescription(bookKey)
@@ -40,6 +40,23 @@ export async function fetchBookDescription(bookKey)
     })
     .then((response) => response.data.description)
     .then((description) =>  popUpManager.generatePopUp("details",description))
+}
+
+export async function findAuthorKey(author){
+
+    axios({
+        method: 'get',
+        url: createUrl("/search/","authors.json?q="+author)
+    })
+    .then((response) => findBookByAuthor(response.data.docs[0].key));
+}
+
+export async function findBookByAuthor(key){
+       axios({
+        method: 'get',
+        url: createUrl("/authors/",key+"/works.json")
+    })
+    .then((response) => dataManager.generateBooksCollection(response.data,"byAuthor")); 
 }
 
 /*export async function requestToApi2(author){

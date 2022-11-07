@@ -4,7 +4,6 @@ import Book from './classes.js'
 
 import * as showcaseGenerator from './showcase-generator';
 
-import * as externalCallsManager from './external-calls'
 
 //--------- DECLARATIONS ---------
 
@@ -12,13 +11,34 @@ const booksCollection = []
 
 //--------- FUNCTIONS ---------
 
-export function generateBooksCollection(responseFromApi)
+export function generateBooksCollection(responseFromApi, queryType)
 {
-    for (let i=0; i < responseFromApi.works.length; i++){
+    switch(queryType)
+    {
+        case 'byGenre':
 
-        let newBook = generateNewBook(responseFromApi.works[i].title, responseFromApi.works[i].authors[0].name,responseFromApi.works[i].cover_id, responseFromApi.works[i].key)
+                for (let i=0; i < responseFromApi.works.length; i++){
 
-        booksCollection.push(newBook)
+                    let newBook = generateNewBook(responseFromApi.works[i].title, responseFromApi.works[i].authors[0].name,responseFromApi.works[i].cover_id, responseFromApi.works[i].key)
+
+                    booksCollection.push(newBook)
+                }
+                break;
+
+        case 'byAuthor':
+
+                for(let i=0; i<responseFromApi.entries.length; i++){
+                     let newBook = generateNewBook(responseFromApi.entries[i].title, responseFromApi.entries[i].authors[0].name,responseFromApi.entries[i].cover_id, responseFromApi.entries[i].key)
+                    booksCollection.push(newBook)
+
+                    //To Fix Cover and Author Name
+                }
+
+                break;
+
+        case 'byTitle':
+
+                break;
     }
 
     showcaseGenerator.generateNewBooksShowcase(booksCollection)

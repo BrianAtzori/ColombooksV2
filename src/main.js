@@ -10,6 +10,9 @@
 //Comments on functions
 //Gestire risposta vuota se non trovo libri
 //Gestire lettere maiuscole nella ricerca
+//Pulizia PopUp
+//Ordinare Libri
+//Gestire descrizione Undefined
 
 //--------- IMPORTS ---------
 
@@ -82,11 +85,11 @@ contentPage.addEventListener('click', function(event){
             break;  
         
         case searchButton:
-
+            //Gestire meglio sia front-end che codice
             if(advancedSearchFieldsContainer.classList.contains('active')){
 
                 if(advancedSearchTitleInput.value==""){
-                    externalCalls.requestToApi2(advancedSearchAuthorInput.value)
+                    externalCalls.findAuthorKey(advancedSearchAuthorInput.value)
                 }
                 else if(advancedSearchAuthorInput.value=="") {
                     externalCalls.requestToApi4(advancedSearchTitleInput.value)
