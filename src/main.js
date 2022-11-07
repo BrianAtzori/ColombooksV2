@@ -70,7 +70,7 @@ contentPage.addEventListener('click', function(event){
     switch (targetClicked){
 
         case buttonShowInfo:
-            popUpManager.generatePopUp("info");
+            popUpManager.generatePopUp("info","");
             break;
         
         case popUpWindowCloseButton:

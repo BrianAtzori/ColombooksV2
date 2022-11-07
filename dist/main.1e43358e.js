@@ -197,13 +197,12 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
 var Book = /*#__PURE__*/function () {
   //Need to be fixed and improved
 
-  function Book(title, author, coverId, key, details) {
+  function Book(title, author, coverId, key) {
     _classCallCheck(this, Book);
     this.title = title;
     this.author = author;
     this.coverId = coverId;
     this.key = key;
-    this.details = details;
   }
   _createClass(Book, [{
     key: "retrieveCover",
@@ -230,7 +229,7 @@ var popUpWindow = document.querySelector('.popup-window');
 
 //--------- FUNCTIONS ---------
 
-function generatePopUp(popUpType) {
+function generatePopUp(popUpType, data) {
   overlayBackground.classList.add('active');
   switch (popUpType) {
     case 'info':
@@ -238,7 +237,7 @@ function generatePopUp(popUpType) {
       break;
     case 'details':
       popUpWindow.classList.add('active');
-      popUpWindow.innerText = "Ciao!";
+      popUpWindow.innerText = data;
       break;
   }
 }
@@ -254,14 +253,13 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.showDetails = showDetails;
 var popUpManager = _interopRequireWildcard(require("./pop-ups.js"));
+var externalCallsManager = _interopRequireWildcard(require("./external-calls"));
 function _getRequireWildcardCache(nodeInterop) { if (typeof WeakMap !== "function") return null; var cacheBabelInterop = new WeakMap(); var cacheNodeInterop = new WeakMap(); return (_getRequireWildcardCache = function (nodeInterop) { return nodeInterop ? cacheNodeInterop : cacheBabelInterop; })(nodeInterop); }
 function _interopRequireWildcard(obj, nodeInterop) { if (!nodeInterop && obj && obj.__esModule) { return obj; } if (obj === null || typeof obj !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(nodeInterop); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (key !== "default" && Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
 function showDetails(bookKey) {
-  //Unique ID on button to find the book in the collection
-
-  popUpManager.generatePopUp("details");
+  externalCallsManager.fetchBookDescription(bookKey);
 }
-},{"./pop-ups.js":"src/scripts/pop-ups.js"}],"src/scripts/showcase-generator.js":[function(require,module,exports) {
+},{"./pop-ups.js":"src/scripts/pop-ups.js","./external-calls":"src/scripts/external-calls.js"}],"src/scripts/showcase-generator.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -273,12 +271,9 @@ exports.generateNewBooksShowcase = generateNewBooksShowcase;
 exports.generateNewCoverElement = generateNewCoverElement;
 exports.generateNewDetailsButtonElement = generateNewDetailsButtonElement;
 exports.generateNewTitleElement = generateNewTitleElement;
-var _classes = _interopRequireDefault(require("./classes.js"));
 var showcaseManager = _interopRequireWildcard(require("./showcase-manager.js"));
-var _externalCalls = require("./external-calls.js");
 function _getRequireWildcardCache(nodeInterop) { if (typeof WeakMap !== "function") return null; var cacheBabelInterop = new WeakMap(); var cacheNodeInterop = new WeakMap(); return (_getRequireWildcardCache = function (nodeInterop) { return nodeInterop ? cacheNodeInterop : cacheBabelInterop; })(nodeInterop); }
 function _interopRequireWildcard(obj, nodeInterop) { if (!nodeInterop && obj && obj.__esModule) { return obj; } if (obj === null || typeof obj !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(nodeInterop); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (key !== "default" && Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 //--------- IMPORTS ---------
 
 //--------- ELEMENTS ---------
@@ -306,7 +301,7 @@ function generateBookContainer(Book) {
   elementsArray.push(newBookTitle);
   var newAuthorLabel = generateNewAuthorElement(Book.author);
   elementsArray.push(newAuthorLabel);
-  var newDetailsButton = generateNewDetailsButtonElement();
+  var newDetailsButton = generateNewDetailsButtonElement(Book.key);
   elementsArray.push(newDetailsButton);
   for (var i = 0; i < elementsArray.length; i++) {
     newBookContainer.appendChild(elementsArray[i]);
@@ -338,7 +333,11 @@ function generateNewDetailsButtonElement(bookKey) {
   generatedDetailsButton.type = 'button';
   generatedDetailsButton.value = 'Details';
   generatedDetailsButton.classList.add('expand-details-button');
-  generatedDetailsButton.onclick = showcaseManager.showDetails;
+  generatedDetailsButton.setAttribute("data-relatedbookkey", bookKey);
+  generatedDetailsButton.addEventListener('click', function (event) {
+    var detailsButtonClicked = event.target;
+    showcaseManager.showDetails(detailsButtonClicked.getAttribute('data-relatedbookkey'));
+  });
   return generatedDetailsButton;
 }
 
@@ -437,7 +436,7 @@ export function generateGUI4(datafromAPI4)
         //console.log(Book)
     }
 }*/
-},{"./classes.js":"src/scripts/classes.js","./showcase-manager.js":"src/scripts/showcase-manager.js","./external-calls.js":"src/scripts/external-calls.js"}],"src/scripts/data-manager.js":[function(require,module,exports) {
+},{"./showcase-manager.js":"src/scripts/showcase-manager.js"}],"src/scripts/data-manager.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -460,14 +459,13 @@ var booksCollection = [];
 
 function generateBooksCollection(responseFromApi) {
   for (var i = 0; i < responseFromApi.works.length; i++) {
-    var newBook = generateNewBook(responseFromApi.works[i].title, responseFromApi.works[i].authors[0].name, responseFromApi.works[i].cover_id, responseFromApi.works[i].key, "BOOK DETAILS NOT AVAIBLE");
+    var newBook = generateNewBook(responseFromApi.works[i].title, responseFromApi.works[i].authors[0].name, responseFromApi.works[i].cover_id, responseFromApi.works[i].key);
     booksCollection.push(newBook);
   }
   showcaseGenerator.generateNewBooksShowcase(booksCollection);
 }
 function generateNewBook(title, authors, coverId, key, details) {
   var generatedBook = new _classes.default(title, authors, coverId, key, details);
-  generatedBook.details = externalCallsManager.fetchBookDescription(key);
   return generatedBook;
 }
 },{"./classes.js":"src/scripts/classes.js","./showcase-generator":"src/scripts/showcase-generator.js","./external-calls":"src/scripts/external-calls.js"}],"../../../../opt/homebrew/lib/node_modules/parcel-bundler/src/builtins/_empty.js":[function(require,module,exports) {
@@ -6233,6 +6231,7 @@ Object.defineProperty(exports, "__esModule", {
 exports.fetchBookDescription = fetchBookDescription;
 exports.findBookByGenre = findBookByGenre;
 var dataManager = _interopRequireWildcard(require("./data-manager"));
+var popUpManager = _interopRequireWildcard(require("./pop-ups.js"));
 function _getRequireWildcardCache(nodeInterop) { if (typeof WeakMap !== "function") return null; var cacheBabelInterop = new WeakMap(); var cacheNodeInterop = new WeakMap(); return (_getRequireWildcardCache = function (nodeInterop) { return nodeInterop ? cacheNodeInterop : cacheBabelInterop; })(nodeInterop); }
 function _interopRequireWildcard(obj, nodeInterop) { if (!nodeInterop && obj && obj.__esModule) { return obj; } if (obj === null || typeof obj !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(nodeInterop); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (key !== "default" && Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
 function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) { return typeof obj; } : function (obj) { return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }, _typeof(obj); }
@@ -6249,7 +6248,7 @@ var axios = require('axios').default;
 //Generate URLs to fetch
 
 function createUrl(queryFields, userQuery) {
-  var queryUrl = "https://openlibrary.org/" + queryFields + userQuery;
+  var queryUrl = "https://openlibrary.org" + queryFields + userQuery;
   return queryUrl;
 }
 
@@ -6265,7 +6264,7 @@ function _findBookByGenre() {
           case 0:
             axios({
               method: 'get',
-              url: createUrl("subjects/", genre + ".json")
+              url: createUrl("/subjects/", genre + ".json")
             }).then(function (response) {
               return dataManager.generateBooksCollection(response.data);
             });
@@ -6310,9 +6309,11 @@ function _fetchBookDescription() {
           case 0:
             axios({
               method: 'get',
-              url: createUrl("", bookKey.substring(1) + ".json")
+              url: createUrl("/", bookKey.substring(1) + ".json")
             }).then(function (response) {
-              return console.log(response.data.description);
+              return response.data.description;
+            }).then(function (description) {
+              return popUpManager.generatePopUp("details", description);
             });
           case 1:
           case "end":
@@ -6323,7 +6324,7 @@ function _fetchBookDescription() {
   }));
   return _fetchBookDescription.apply(this, arguments);
 }
-},{"./data-manager":"src/scripts/data-manager.js","dotenv":"node_modules/dotenv/lib/main.js","axios":"node_modules/axios/index.js"}],"src/main.js":[function(require,module,exports) {
+},{"./data-manager":"src/scripts/data-manager.js","./pop-ups.js":"src/scripts/pop-ups.js","dotenv":"node_modules/dotenv/lib/main.js","axios":"node_modules/axios/index.js"}],"src/main.js":[function(require,module,exports) {
 "use strict";
 
 require("./styles/general-style.scss");
@@ -6384,7 +6385,7 @@ contentPage.addEventListener('click', function (event) {
   var targetClicked = event.target;
   switch (targetClicked) {
     case buttonShowInfo:
-      popUpManager.generatePopUp("info");
+      popUpManager.generatePopUp("info", "");
       break;
     case popUpWindowCloseButton:
       popUpManager.closePopUp();
@@ -6431,7 +6432,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "50622" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "49374" + '/');
   ws.onmessage = function (event) {
     checkedAssets = {};
     assetsToAccept = [];

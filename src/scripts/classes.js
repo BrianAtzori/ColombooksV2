@@ -2,12 +2,11 @@ export default class Book{
  
     //Need to be fixed and improved
 
-    constructor (title,author,coverId,key,details){
+    constructor (title,author,coverId,key){
         this.title=title
         this.author=author
         this.coverId=coverId
         this.key=key
-        this.details=details
     }
 
     retrieveCover(){

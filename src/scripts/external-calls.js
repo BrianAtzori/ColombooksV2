@@ -2,6 +2,7 @@
 
 import * as dataManager from './data-manager';
 
+import * as popUpManager from './pop-ups.js';
 
 //--------- DECLARATIONS ---------
 
@@ -26,7 +27,7 @@ export async function findBookByGenre(genre){
 
     axios({
         method: 'get',
-        url: createUrl("subjects/",genre+".json")
+        url: createUrl("/subjects/",genre+".json")
     })
     .then((response) => dataManager.generateBooksCollection(response.data));
 }
@@ -35,9 +36,10 @@ export async function fetchBookDescription(bookKey)
 {
     axios({
         method: 'get',
-        url: createUrl("",bookKey.substring(1)+".json")
+        url: createUrl("/",bookKey.substring(1)+".json")
     })
-    .then((response) => console.log(response.data.description));
+    .then((response) => response.data.description)
+    .then((description) =>  popUpManager.generatePopUp("details",description))
 }
 
 /*export async function requestToApi2(author){

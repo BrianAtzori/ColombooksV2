@@ -16,7 +16,7 @@ export function generateBooksCollection(responseFromApi)
 {
     for (let i=0; i < responseFromApi.works.length; i++){
 
-        let newBook = generateNewBook(responseFromApi.works[i].title, responseFromApi.works[i].authors[0].name,responseFromApi.works[i].cover_id, responseFromApi.works[i].key,"BOOK DETAILS NOT AVAIBLE")
+        let newBook = generateNewBook(responseFromApi.works[i].title, responseFromApi.works[i].authors[0].name,responseFromApi.works[i].cover_id, responseFromApi.works[i].key)
 
         booksCollection.push(newBook)
     }
@@ -27,8 +27,6 @@ export function generateBooksCollection(responseFromApi)
 function generateNewBook(title, authors,coverId,key,details){
 
     let generatedBook = new Book(title,authors,coverId,key, details)
-
-    generatedBook.details = externalCallsManager.fetchBookDescription(key)
 
     return generatedBook
 }

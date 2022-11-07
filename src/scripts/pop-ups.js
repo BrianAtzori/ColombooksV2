@@ -7,7 +7,7 @@ const popUpWindow = document.querySelector('.popup-window')
 
 //--------- FUNCTIONS ---------
 
-export function generatePopUp(popUpType)
+export function generatePopUp(popUpType,data)
 {
     overlayBackground.classList.add('active')
 
@@ -19,7 +19,7 @@ export function generatePopUp(popUpType)
 
         case 'details':
             popUpWindow.classList.add('active')
-            popUpWindow.innerText= "Ciao!"
+            popUpWindow.innerText= data
             break;
     }
 }
