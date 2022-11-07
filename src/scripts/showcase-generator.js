@@ -1,17 +1,11 @@
 //--------- IMPORTS ---------
 
-import Book from './classes.js'
-
 import * as showcaseManager from './showcase-manager.js' 
-
-import { requestToApi3 } from './external-calls.js'
-
 
 
 //--------- ELEMENTS ---------
 
 const booksShowcaseDiv = document.querySelector('.books-showcase')
-
 
 
 //--------- FUNCTIONS ---------
@@ -31,7 +25,9 @@ export function generateNewBooksShowcase(booksCollection)
 export function generateBookContainer(Book)
 {
     const elementsArray =[]
+
     let newBookContainer=document.createElement('div')
+
     newBookContainer.classList.add('book-container')
 
     //This can be done with only one function, maybe creating classes
@@ -45,7 +41,7 @@ export function generateBookContainer(Book)
     let newAuthorLabel = generateNewAuthorElement(Book.author)
     elementsArray.push(newAuthorLabel)
 
-    let newDetailsButton = generateNewDetailsButtonElement()
+    let newDetailsButton = generateNewDetailsButtonElement(Book.key)
     elementsArray.push(newDetailsButton)
 
     for (let i=0; i<elementsArray.length; i++){
@@ -95,10 +91,19 @@ export function generateNewAuthorElement(author)
 export function generateNewDetailsButtonElement(bookKey)
 {
     let generatedDetailsButton = document.createElement('input')
+
     generatedDetailsButton.type = 'button'
+
     generatedDetailsButton.value = 'Details'
+
     generatedDetailsButton.classList.add('expand-details-button')
-    generatedDetailsButton.onclick=showcaseManager.showDetails
+
+    generatedDetailsButton.setAttribute("data-relatedbookkey",bookKey)
+
+    generatedDetailsButton.addEventListener('click', function(event) {
+        const detailsButtonClicked = event.target;
+        showcaseManager.showDetails(detailsButtonClicked.getAttribute('data-relatedbookkey'))
+    })
 
     return generatedDetailsButton
 }
