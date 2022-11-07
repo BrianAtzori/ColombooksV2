@@ -1,6 +1,5 @@
 //To Do:
 
-//Details Button
 //Loading "Animation"
 //Aggiungiamo un H2 con quello cercato
 //Migliore gestione dei campi ricerca / Gestione ricerca avanzata
@@ -10,6 +9,7 @@
 //Pulizia Import/Export
 //Comments on functions
 //Gestire risposta vuota se non trovo libri
+//Gestire lettere maiuscole nella ricerca
 
 //--------- IMPORTS ---------
 

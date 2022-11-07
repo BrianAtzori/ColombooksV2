@@ -226,6 +226,8 @@ exports.generatePopUp = generatePopUp;
 
 var overlayBackground = document.querySelector('#overlay');
 var popUpWindow = document.querySelector('.popup-window');
+var popUpWindowTitle = document.querySelector('.popup-window-title');
+var popUpWindowBody = document.querySelector('.popup-window-body');
 
 //--------- FUNCTIONS ---------
 
@@ -236,8 +238,9 @@ function generatePopUp(popUpType, data) {
       popUpWindow.classList.add('active');
       break;
     case 'details':
+      popUpWindowTitle.innerHTML = 'Description:';
+      popUpWindowBody.innerHTML = data;
       popUpWindow.classList.add('active');
-      popUpWindow.innerText = data;
       break;
   }
 }
@@ -6337,7 +6340,6 @@ function _getRequireWildcardCache(nodeInterop) { if (typeof WeakMap !== "functio
 function _interopRequireWildcard(obj, nodeInterop) { if (!nodeInterop && obj && obj.__esModule) { return obj; } if (obj === null || typeof obj !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(nodeInterop); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (key !== "default" && Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
 //To Do:
 
-//Details Button
 //Loading "Animation"
 //Aggiungiamo un H2 con quello cercato
 //Migliore gestione dei campi ricerca / Gestione ricerca avanzata
@@ -6347,6 +6349,7 @@ function _interopRequireWildcard(obj, nodeInterop) { if (!nodeInterop && obj && 
 //Pulizia Import/Export
 //Comments on functions
 //Gestire risposta vuota se non trovo libri
+//Gestire lettere maiuscole nella ricerca
 
 //--------- IMPORTS ---------
 
