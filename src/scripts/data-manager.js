@@ -9,7 +9,10 @@ import * as showcaseGenerator from './showcase-generator';
 
 const booksCollection = []
 
+
 //--------- FUNCTIONS ---------
+
+//Create an Array of Books, generating the books with the data from the api depending on the type of query
 
 export function generateBooksCollection(responseFromApi, queryType, author)
 {
@@ -51,8 +54,12 @@ export function generateBooksCollection(responseFromApi, queryType, author)
 
     }
 
+    //Call the GUI Generation
+
     showcaseGenerator.generateNewBooksShowcase(booksCollection)
 }
+
+//Create the Book with the constructor using given data
 
 function generateNewBook(title, authors,coverId,key,details){
 

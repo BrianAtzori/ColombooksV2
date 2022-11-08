@@ -11,6 +11,8 @@ const popUpWindowBody = document.querySelector('.popup-window-body')
 
 //--------- FUNCTIONS ---------
 
+//Generate Popups based on the type of data to show
+
 export function generatePopUp(popUpType,data)
 {
     overlayBackground.classList.add('active')
@@ -31,6 +33,8 @@ export function generatePopUp(popUpType,data)
             break;
     }
 }
+
+//Close the active popup
 
 export function closePopUp()
 {

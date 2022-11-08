@@ -1,17 +1,17 @@
 //To Do:
-//Aggiungiamo un H2 con quello cercato
 //Migliore gestione dei campi ricerca / Gestione ricerca avanzata
 //Error if blank/null
 //TryCatch su richieste
 //Lodash for path
-//Pulizia Import/Export
-//Comments on functions
 //Gestire risposta vuota se non trovo libri
 //Gestire lettere maiuscole nella ricerca
 //Pulizia PopUp
 //Ordinare Libri
 //Gestire descrizione Undefined
 //Gestire copertina undefined
+//Svuota dopo ricerca
+//fare la guida
+//migliorare grafica popup
 
 //--------- IMPORTS ---------
 
@@ -58,12 +58,12 @@ const advancedSearchAuthorInput = document.querySelector('.author-search-bar')
 
 const advancedSearchTitleInput = document.querySelector('.title-search-bar')
 
-//Book Showcase Elements
+//Showcase Elements
 
-const detailPopUpCloseButton= document.querySelector('.info-window-close-button')
+const blankShowcase = document.querySelector('.books-showcase')
 
 
-//--------- EVENT LISTENER ---------
+//--------- EVENT LISTENERS ---------
 
 contentPage.addEventListener('click', function(event){
   
@@ -84,18 +84,36 @@ contentPage.addEventListener('click', function(event){
             break;  
         
         case searchButton:
+
             //Gestire meglio sia front-end che codice
+
             if(advancedSearchFieldsContainer.classList.contains('active')){
 
                 if(advancedSearchTitleInput.value==""){
+
+                    blankShowcase.innerHTML='<h2>Search result for the author: '+advancedSearchAuthorInput.value+'<h2>'
+
                     externalCalls.findAuthorKey(advancedSearchAuthorInput.value)
+
+                    advancedSearchAuthorInput.value=""
+
                 }
                 else if(advancedSearchAuthorInput.value=="") {
+
+                    blankShowcase.innerHTML='<h2>Search results for the title: '+advancedSearchTitleInput.value+'<h2>'
+
                     externalCalls.findBookByTitle(advancedSearchTitleInput.value)
+
+                    advancedSearchTitleInput.value=""
+
                 }
             }
             else{
+
+                blankShowcase.innerHTML='<h2>Search results for the genre: '+genreToSearchInput.value+'<h2>'
+
                 externalCalls.findBookByGenre(genreToSearchInput.value)
+
                 genreToSearchInput.value=""
             } 
             break;
