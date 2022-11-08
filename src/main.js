@@ -12,6 +12,7 @@
 //Svuota dopo ricerca
 //fare la guida
 //migliorare grafica popup
+//loading animations overwritten
 
 //--------- IMPORTS ---------
 

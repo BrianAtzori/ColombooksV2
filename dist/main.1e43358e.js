@@ -6373,6 +6373,7 @@ function _interopRequireWildcard(obj, nodeInterop) { if (!nodeInterop && obj && 
 //Svuota dopo ricerca
 //fare la guida
 //migliorare grafica popup
+//loading animations overwritten
 
 //--------- IMPORTS ---------
 
