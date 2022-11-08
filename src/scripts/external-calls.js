@@ -7,7 +7,10 @@ import * as popUpManager from './pop-ups.js';
 //--------- DECLARATIONS ---------
 
 require('dotenv').config();
+
 const axios = require('axios').default;
+
+const loadingAnimation = document.querySelector('.loading-animation')
 
 
 //--------- FUNCTIONS ---------
@@ -26,12 +29,15 @@ function createUrl(queryFields, userQuery)
 //Fetch Request to API, searching by genre
 
 export async function findBookByGenre(genre){
+    
+    loadingAnimation.style.display="block"
 
     axios({
         method: 'get',
         url: createUrl("/subjects/",genre+".json")
     })
-    .then((response) => dataManager.generateBooksCollection(response.data,"byGenre"));
+    .then((response) => dataManager.generateBooksCollection(response.data,"byGenre"))
+    .finally(() => loadingAnimation.style.display="none")
 }
 
 export async function fetchBookDescription(bookKey)
@@ -54,19 +60,27 @@ export async function findAuthorKey(author){
 }
 
 export async function findBookByAuthor(key,author){
+    
+    loadingAnimation.style.display="block"
+
        axios({
         method: 'get',
         url: createUrl("/authors/",key+"/works.json")
     })
-    .then((response) => dataManager.generateBooksCollection(response.data,"byAuthor",author)); 
+    .then((response) => dataManager.generateBooksCollection(response.data,"byAuthor",author))
+    .finally(() => loadingAnimation.style.display="none")
 }
 
 export async function findBookByTitle(title){
+
+    loadingAnimation.style.display="block"
+
     axios({
         method: 'get',
         url: createUrl("/search.json?q=",title)
     })
-    .then((response) => dataManager.generateBooksCollection(response.data,"byTitle")); 
+    .then((response) => dataManager.generateBooksCollection(response.data,"byTitle"))
+    .finally(() => loadingAnimation.style.display="none")
 }
 
 /*export async function requestToApi2(author){

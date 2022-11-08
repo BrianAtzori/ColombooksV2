@@ -6267,6 +6267,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
 require('dotenv').config();
 var axios = require('axios').default;
+var loadingAnimation = document.querySelector('.loading-animation');
 
 //--------- FUNCTIONS ---------
 
@@ -6288,13 +6289,16 @@ function _findBookByGenre() {
       while (1) {
         switch (_context.prev = _context.next) {
           case 0:
+            loadingAnimation.style.display = "block";
             axios({
               method: 'get',
               url: createUrl("/subjects/", genre + ".json")
             }).then(function (response) {
               return dataManager.generateBooksCollection(response.data, "byGenre");
+            }).finally(function () {
+              return loadingAnimation.style.display = "none";
             });
-          case 1:
+          case 2:
           case "end":
             return _context.stop();
         }
@@ -6362,13 +6366,16 @@ function _findBookByAuthor() {
       while (1) {
         switch (_context4.prev = _context4.next) {
           case 0:
+            loadingAnimation.style.display = "block";
             axios({
               method: 'get',
               url: createUrl("/authors/", key + "/works.json")
             }).then(function (response) {
               return dataManager.generateBooksCollection(response.data, "byAuthor", author);
+            }).finally(function () {
+              return loadingAnimation.style.display = "none";
             });
-          case 1:
+          case 2:
           case "end":
             return _context4.stop();
         }
@@ -6407,13 +6414,16 @@ function _findBookByTitle() {
       while (1) {
         switch (_context5.prev = _context5.next) {
           case 0:
+            loadingAnimation.style.display = "block";
             axios({
               method: 'get',
               url: createUrl("/search.json?q=", title)
             }).then(function (response) {
               return dataManager.generateBooksCollection(response.data, "byTitle");
+            }).finally(function () {
+              return loadingAnimation.style.display = "none";
             });
-          case 1:
+          case 2:
           case "end":
             return _context5.stop();
         }
@@ -6434,8 +6444,6 @@ var popUpManager = _interopRequireWildcard(require("./scripts/pop-ups.js"));
 function _getRequireWildcardCache(nodeInterop) { if (typeof WeakMap !== "function") return null; var cacheBabelInterop = new WeakMap(); var cacheNodeInterop = new WeakMap(); return (_getRequireWildcardCache = function (nodeInterop) { return nodeInterop ? cacheNodeInterop : cacheBabelInterop; })(nodeInterop); }
 function _interopRequireWildcard(obj, nodeInterop) { if (!nodeInterop && obj && obj.__esModule) { return obj; } if (obj === null || typeof obj !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(nodeInterop); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (key !== "default" && Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
 //To Do:
-
-//Loading "Animation"
 //Aggiungiamo un H2 con quello cercato
 //Migliore gestione dei campi ricerca / Gestione ricerca avanzata
 //Error if blank/null
