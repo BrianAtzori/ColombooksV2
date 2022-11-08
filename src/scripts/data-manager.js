@@ -28,17 +28,27 @@ export function generateBooksCollection(responseFromApi, queryType, author)
         case 'byAuthor':
 
                 for(let i=0; i<responseFromApi.entries.length; i++){
-                     let newBook = generateNewBook(responseFromApi.entries[i].title, author,responseFromApi.entries[i].covers, responseFromApi.entries[i].key)
-                    booksCollection.push(newBook)
 
-                    //To Fix Cover and Author Name
+                     let newBook = generateNewBook(responseFromApi.entries[i].title, author,responseFromApi.entries[i].covers, responseFromApi.entries[i].key)
+
+                    booksCollection.push(newBook)
                 }
 
                 break;
 
         case 'byTitle':
 
+                console.log(responseFromApi)
+
+                for(let i=0; i<responseFromApi.docs.length; i++){
+
+                    let newBook = generateNewBook(responseFromApi.docs[i].title, responseFromApi.docs[i].author_name,responseFromApi.docs[i].cover_i, responseFromApi.docs[i].key)
+
+                    booksCollection.push(newBook)
+                }
+
                 break;
+
     }
 
     showcaseGenerator.generateNewBooksShowcase(booksCollection)

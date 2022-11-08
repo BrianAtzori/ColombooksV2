@@ -93,7 +93,7 @@ contentPage.addEventListener('click', function(event){
                     externalCalls.findAuthorKey(advancedSearchAuthorInput.value)
                 }
                 else if(advancedSearchAuthorInput.value=="") {
-                    externalCalls.requestToApi4(advancedSearchTitleInput.value)
+                    externalCalls.findBookByTitle(advancedSearchTitleInput.value)
                 }
             }
             else{

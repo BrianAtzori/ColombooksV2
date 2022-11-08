@@ -474,12 +474,14 @@ function generateBooksCollection(responseFromApi, queryType, author) {
       for (var _i = 0; _i < responseFromApi.entries.length; _i++) {
         var _newBook = generateNewBook(responseFromApi.entries[_i].title, author, responseFromApi.entries[_i].covers, responseFromApi.entries[_i].key);
         booksCollection.push(_newBook);
-
-        //To Fix Cover and Author Name
       }
-
       break;
     case 'byTitle':
+      console.log(responseFromApi);
+      for (var _i2 = 0; _i2 < responseFromApi.docs.length; _i2++) {
+        var _newBook2 = generateNewBook(responseFromApi.docs[_i2].title, responseFromApi.docs[_i2].author_name, responseFromApi.docs[_i2].cover_i, responseFromApi.docs[_i2].key);
+        booksCollection.push(_newBook2);
+      }
       break;
   }
   showcaseGenerator.generateNewBooksShowcase(booksCollection);
@@ -6252,6 +6254,7 @@ exports.fetchBookDescription = fetchBookDescription;
 exports.findAuthorKey = findAuthorKey;
 exports.findBookByAuthor = findBookByAuthor;
 exports.findBookByGenre = findBookByGenre;
+exports.findBookByTitle = findBookByTitle;
 var dataManager = _interopRequireWildcard(require("./data-manager"));
 var popUpManager = _interopRequireWildcard(require("./pop-ups.js"));
 function _getRequireWildcardCache(nodeInterop) { if (typeof WeakMap !== "function") return null; var cacheBabelInterop = new WeakMap(); var cacheNodeInterop = new WeakMap(); return (_getRequireWildcardCache = function (nodeInterop) { return nodeInterop ? cacheNodeInterop : cacheBabelInterop; })(nodeInterop); }
@@ -6353,6 +6356,30 @@ function _findAuthorKey() {
 function findBookByAuthor(_x4, _x5) {
   return _findBookByAuthor.apply(this, arguments);
 }
+function _findBookByAuthor() {
+  _findBookByAuthor = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee4(key, author) {
+    return _regeneratorRuntime().wrap(function _callee4$(_context4) {
+      while (1) {
+        switch (_context4.prev = _context4.next) {
+          case 0:
+            axios({
+              method: 'get',
+              url: createUrl("/authors/", key + "/works.json")
+            }).then(function (response) {
+              return dataManager.generateBooksCollection(response.data, "byAuthor", author);
+            });
+          case 1:
+          case "end":
+            return _context4.stop();
+        }
+      }
+    }, _callee4);
+  }));
+  return _findBookByAuthor.apply(this, arguments);
+}
+function findBookByTitle(_x6) {
+  return _findBookByTitle.apply(this, arguments);
+}
 /*export async function requestToApi2(author){
 
     fetch("https://openlibrary.org/search/authors.json?q="+author)
@@ -6374,26 +6401,26 @@ export async function requestToApi4(title)
     .then((response)=> response.json())
     .then((data) => showcaseGenerator.generateGUI4(data));
 }*/
-function _findBookByAuthor() {
-  _findBookByAuthor = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee4(key, author) {
-    return _regeneratorRuntime().wrap(function _callee4$(_context4) {
+function _findBookByTitle() {
+  _findBookByTitle = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee5(title) {
+    return _regeneratorRuntime().wrap(function _callee5$(_context5) {
       while (1) {
-        switch (_context4.prev = _context4.next) {
+        switch (_context5.prev = _context5.next) {
           case 0:
             axios({
               method: 'get',
-              url: createUrl("/authors/", key + "/works.json")
+              url: createUrl("/search.json?q=", title)
             }).then(function (response) {
-              return dataManager.generateBooksCollection(response.data, "byAuthor", author);
+              return dataManager.generateBooksCollection(response.data, "byTitle");
             });
           case 1:
           case "end":
-            return _context4.stop();
+            return _context5.stop();
         }
       }
-    }, _callee4);
+    }, _callee5);
   }));
-  return _findBookByAuthor.apply(this, arguments);
+  return _findBookByTitle.apply(this, arguments);
 }
 },{"./data-manager":"src/scripts/data-manager.js","./pop-ups.js":"src/scripts/pop-ups.js","dotenv":"node_modules/dotenv/lib/main.js","axios":"node_modules/axios/index.js"}],"src/main.js":[function(require,module,exports) {
 "use strict";
@@ -6474,7 +6501,7 @@ contentPage.addEventListener('click', function (event) {
         if (advancedSearchTitleInput.value == "") {
           externalCalls.findAuthorKey(advancedSearchAuthorInput.value);
         } else if (advancedSearchAuthorInput.value == "") {
-          externalCalls.requestToApi4(advancedSearchTitleInput.value);
+          externalCalls.findBookByTitle(advancedSearchTitleInput.value);
         }
       } else {
         externalCalls.findBookByGenre(genreToSearchInput.value);
