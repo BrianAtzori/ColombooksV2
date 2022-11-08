@@ -208,7 +208,9 @@ var Book = /*#__PURE__*/function () {
     key: "retrieveCover",
     value: function retrieveCover() {
       var coverUrl = "https://covers.openlibrary.org/b/id/" + this.coverId + "-L.jpg";
-      console.log(coverUrl);
+
+      //console.log(coverUrl)
+
       return coverUrl;
     }
   }]);
@@ -460,7 +462,7 @@ var booksCollection = [];
 
 //--------- FUNCTIONS ---------
 
-function generateBooksCollection(responseFromApi, queryType) {
+function generateBooksCollection(responseFromApi, queryType, author) {
   switch (queryType) {
     case 'byGenre':
       for (var i = 0; i < responseFromApi.works.length; i++) {
@@ -470,7 +472,7 @@ function generateBooksCollection(responseFromApi, queryType) {
       break;
     case 'byAuthor':
       for (var _i = 0; _i < responseFromApi.entries.length; _i++) {
-        var _newBook = generateNewBook(responseFromApi.entries[_i].title, "Va rivisto perchè non esposto direttamente", responseFromApi.entries[_i].covers, responseFromApi.entries[_i].key);
+        var _newBook = generateNewBook(responseFromApi.entries[_i].title, author, responseFromApi.entries[_i].covers, responseFromApi.entries[_i].key);
         booksCollection.push(_newBook);
 
         //To Fix Cover and Author Name
@@ -6269,6 +6271,7 @@ var axios = require('axios').default;
 
 function createUrl(queryFields, userQuery) {
   var queryUrl = "https://openlibrary.org" + queryFields + userQuery;
+  console.log(queryUrl);
   return queryUrl;
 }
 
@@ -6336,7 +6339,7 @@ function _findAuthorKey() {
               method: 'get',
               url: createUrl("/search/", "authors.json?q=" + author)
             }).then(function (response) {
-              return findBookByAuthor(response.data.docs[0].key);
+              return findBookByAuthor(response.data.docs[0].key, response.data.docs[0].name);
             });
           case 1:
           case "end":
@@ -6347,7 +6350,7 @@ function _findAuthorKey() {
   }));
   return _findAuthorKey.apply(this, arguments);
 }
-function findBookByAuthor(_x4) {
+function findBookByAuthor(_x4, _x5) {
   return _findBookByAuthor.apply(this, arguments);
 }
 /*export async function requestToApi2(author){
@@ -6372,7 +6375,7 @@ export async function requestToApi4(title)
     .then((data) => showcaseGenerator.generateGUI4(data));
 }*/
 function _findBookByAuthor() {
-  _findBookByAuthor = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee4(key) {
+  _findBookByAuthor = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee4(key, author) {
     return _regeneratorRuntime().wrap(function _callee4$(_context4) {
       while (1) {
         switch (_context4.prev = _context4.next) {
@@ -6381,7 +6384,7 @@ function _findBookByAuthor() {
               method: 'get',
               url: createUrl("/authors/", key + "/works.json")
             }).then(function (response) {
-              return dataManager.generateBooksCollection(response.data, "byAuthor");
+              return dataManager.generateBooksCollection(response.data, "byAuthor", author);
             });
           case 1:
           case "end":
@@ -6505,7 +6508,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "49992" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "49367" + '/');
   ws.onmessage = function (event) {
     checkedAssets = {};
     assetsToAccept = [];

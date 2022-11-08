@@ -18,6 +18,8 @@ function createUrl(queryFields, userQuery)
 {
     let queryUrl = process.env.BASE_URL+queryFields+userQuery
 
+    console.log(queryUrl)
+    
     return queryUrl
 }
 
@@ -48,15 +50,15 @@ export async function findAuthorKey(author){
         method: 'get',
         url: createUrl("/search/","authors.json?q="+author)
     })
-    .then((response) => findBookByAuthor(response.data.docs[0].key));
+    .then((response) => findBookByAuthor(response.data.docs[0].key,response.data.docs[0].name));
 }
 
-export async function findBookByAuthor(key){
+export async function findBookByAuthor(key,author){
        axios({
         method: 'get',
         url: createUrl("/authors/",key+"/works.json")
     })
-    .then((response) => dataManager.generateBooksCollection(response.data,"byAuthor")); 
+    .then((response) => dataManager.generateBooksCollection(response.data,"byAuthor",author)); 
 }
 
 /*export async function requestToApi2(author){
