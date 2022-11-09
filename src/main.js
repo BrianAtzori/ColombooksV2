@@ -9,6 +9,7 @@
 //Svuota dopo ricerca
 //migliorare grafica popup
 //loading animations overwritten
+//animations
 
 //--------- IMPORTS ---------
 
