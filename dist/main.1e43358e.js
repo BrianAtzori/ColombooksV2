@@ -6360,16 +6360,13 @@ var popUpManager = _interopRequireWildcard(require("./scripts/pop-ups.js"));
 function _getRequireWildcardCache(nodeInterop) { if (typeof WeakMap !== "function") return null; var cacheBabelInterop = new WeakMap(); var cacheNodeInterop = new WeakMap(); return (_getRequireWildcardCache = function (nodeInterop) { return nodeInterop ? cacheNodeInterop : cacheBabelInterop; })(nodeInterop); }
 function _interopRequireWildcard(obj, nodeInterop) { if (!nodeInterop && obj && obj.__esModule) { return obj; } if (obj === null || typeof obj !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(nodeInterop); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (key !== "default" && Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
 //To Do:
-//Migliore gestione dei campi ricerca / Gestione ricerca avanzata
-//Error if blank/null
 //TryCatch su richieste
 //Lodash for path
 //Gestire risposta vuota se non trovo libri
-//Gestire lettere maiuscole nella ricerca
 //Pulizia PopUp
 //Ordinare Libri
 //Gestire descrizione Undefined
-//Gestire copertina undefined
+//Gestire copertina undefined / array di copertine
 //Svuota dopo ricerca
 //fare la guida
 //migliorare grafica popup
@@ -6394,6 +6391,7 @@ var popUpWindowCloseButton = document.querySelector('.popup-window-close-button'
 
 var searchButton = document.querySelector('.search-button');
 var genreToSearchInput = document.querySelector('.genre-search-bar');
+var searchBarsContainers = document.querySelector('.search-container');
 
 //Advanced Search Elements
 
@@ -6418,25 +6416,54 @@ contentPage.addEventListener('click', function (event) {
       popUpManager.closePopUp();
       break;
     case advancedSearchButton:
-      advancedSearchFieldsContainer.classList.add('active');
+      advancedSearchFieldsContainer.classList.contains('active') ? advancedSearchFieldsContainer.classList.remove('active') : advancedSearchFieldsContainer.classList.add('active');
+      break;
+    case genreToSearchInput:
+      advancedSearchFieldsContainer.classList.remove('active');
+      advancedSearchTitleInput.value = "";
+      advancedSearchAuthorInput.value = "";
+      break;
+    case advancedSearchAuthorInput:
+      advancedSearchTitleInput.value = "";
+      genreToSearchInput.value = "";
+      break;
+    case advancedSearchTitleInput:
+      advancedSearchAuthorInput.value = "";
+      genreToSearchInput.value = "";
       break;
     case searchButton:
-      //Gestire meglio sia front-end che codice
-
-      if (advancedSearchFieldsContainer.classList.contains('active')) {
-        if (advancedSearchTitleInput.value == "") {
-          blankShowcase.innerHTML = '<h2>Search result for the author: ' + advancedSearchAuthorInput.value + '<h2>';
-          externalCalls.findAuthorKey(advancedSearchAuthorInput.value);
-          advancedSearchAuthorInput.value = "";
-        } else if (advancedSearchAuthorInput.value == "") {
-          blankShowcase.innerHTML = '<h2>Search results for the title: ' + advancedSearchTitleInput.value + '<h2>';
-          externalCalls.findBookByTitle(advancedSearchTitleInput.value);
-          advancedSearchTitleInput.value = "";
-        }
-      } else {
-        blankShowcase.innerHTML = '<h2>Search results for the genre: ' + genreToSearchInput.value + '<h2>';
-        externalCalls.findBookByGenre(genreToSearchInput.value);
-        genreToSearchInput.value = "";
+      var typeOfSearch = advancedSearchFieldsContainer.classList.contains('active') ? advancedSearchAuthorInput.value === "" ? typeOfSearch = "title" : typeOfSearch = "author" : typeOfSearch = "genre";
+      switch (typeOfSearch) {
+        case "genre":
+          if (genreToSearchInput.value === "") {
+            alert("Wait! You haven't entered anything to search the archive.\nFill in one of the fields to perform a search.");
+          } else {
+            blankShowcase.innerHTML = '<h2>Search results for the genre: ' + genreToSearchInput.value + '<h2>';
+            externalCalls.findBookByGenre(genreToSearchInput.value.toLowerCase());
+            genreToSearchInput.value = "";
+          }
+          break;
+        case "title":
+          if (advancedSearchTitleInput.value === "") {
+            alert("Wait! You haven't entered anything to search the archive.\nFill in one of the fields to perform a search.");
+          } else {
+            blankShowcase.innerHTML = '<h2>Search results for the title: ' + advancedSearchTitleInput.value + '<h2>';
+            externalCalls.findBookByTitle(advancedSearchTitleInput.value);
+            advancedSearchTitleInput.value = "";
+          }
+          break;
+        case "author":
+          if (advancedSearchAuthorInput.value === "") {
+            alert("Wait! You haven't entered anything to search the archive.\nFill in one of the fields to perform a search.");
+          } else {
+            blankShowcase.innerHTML = '<h2>Search result for the author: ' + advancedSearchAuthorInput.value + '<h2>';
+            externalCalls.findAuthorKey(advancedSearchAuthorInput.value);
+            advancedSearchAuthorInput.value = "";
+          }
+          break;
+        default:
+          alert("Wait! You haven't entered anything to search the archive.\nFill in one of the fields to perform a search.");
+          break;
       }
       break;
   }
@@ -6466,7 +6493,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "49367" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "49507" + '/');
   ws.onmessage = function (event) {
     checkedAssets = {};
     assetsToAccept = [];
