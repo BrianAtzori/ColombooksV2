@@ -6368,7 +6368,6 @@ function _interopRequireWildcard(obj, nodeInterop) { if (!nodeInterop && obj && 
 //Gestire descrizione Undefined
 //Gestire copertina undefined / array di copertine
 //Svuota dopo ricerca
-//fare la guida
 //migliorare grafica popup
 //loading animations overwritten
 

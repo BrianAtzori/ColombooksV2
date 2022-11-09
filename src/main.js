@@ -7,7 +7,6 @@
 //Gestire descrizione Undefined
 //Gestire copertina undefined / array di copertine
 //Svuota dopo ricerca
-//fare la guida
 //migliorare grafica popup
 //loading animations overwritten
 
