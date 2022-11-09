@@ -1,14 +1,11 @@
 //To Do:
-//Migliore gestione dei campi ricerca / Gestione ricerca avanzata
-//Error if blank/null
 //TryCatch su richieste
 //Lodash for path
 //Gestire risposta vuota se non trovo libri
-//Gestire lettere maiuscole nella ricerca
 //Pulizia PopUp
 //Ordinare Libri
 //Gestire descrizione Undefined
-//Gestire copertina undefined
+//Gestire copertina undefined / array di copertine
 //Svuota dopo ricerca
 //fare la guida
 //migliorare grafica popup
@@ -49,6 +46,8 @@ const searchButton = document.querySelector('.search-button')
 
 const genreToSearchInput = document.querySelector('.genre-search-bar')
 
+const searchBarsContainers = document.querySelector('.search-container')
+
 //Advanced Search Elements
 
 const advancedSearchButton = document.querySelector('.advanced-search-button')
@@ -73,51 +72,123 @@ contentPage.addEventListener('click', function(event){
     switch (targetClicked){
 
         case buttonShowInfo:
+
             popUpManager.generatePopUp("info","");
+
             break;
         
         case popUpWindowCloseButton:
+
             popUpManager.closePopUp()
+
             break;
 
         case advancedSearchButton:
-            advancedSearchFieldsContainer.classList.add('active')
-            break;  
+
+            advancedSearchFieldsContainer.classList.contains('active') ? advancedSearchFieldsContainer.classList.remove('active') : advancedSearchFieldsContainer.classList.add('active')
+            
+            break; 
+            
+        case genreToSearchInput:
+            
+            advancedSearchFieldsContainer.classList.remove('active')
+
+            advancedSearchTitleInput.value=""
+
+            advancedSearchAuthorInput.value=""
+
+            break;
+        
+        case advancedSearchAuthorInput:
+    
+            advancedSearchTitleInput.value=""
+    
+            genreToSearchInput.value=""
+    
+            break;
+ 
+        case advancedSearchTitleInput:
+                
+            advancedSearchAuthorInput.value=""
+        
+            genreToSearchInput.value=""
+        
+            break;
+                
         
         case searchButton:
 
-            //Gestire meglio sia front-end che codice
+            let typeOfSearch = advancedSearchFieldsContainer.classList.contains('active') ? (advancedSearchAuthorInput.value === "" ? typeOfSearch="title" : typeOfSearch="author") : typeOfSearch = "genre"
+            
+            switch(typeOfSearch)
+            {
+                case "genre":
 
-            if(advancedSearchFieldsContainer.classList.contains('active')){
+                    if(genreToSearchInput.value===""){
 
-                if(advancedSearchTitleInput.value==""){
+                        alert("Wait! You haven't entered anything to search the archive.\nFill in one of the fields to perform a search."); 
 
-                    blankShowcase.innerHTML='<h2>Search result for the author: '+advancedSearchAuthorInput.value+'<h2>'
+                    }
 
-                    externalCalls.findAuthorKey(advancedSearchAuthorInput.value)
+                    else{
 
-                    advancedSearchAuthorInput.value=""
+                        blankShowcase.innerHTML='<h2>Search results for the genre: '+genreToSearchInput.value+'<h2>'
 
-                }
-                else if(advancedSearchAuthorInput.value=="") {
+                        externalCalls.findBookByGenre(genreToSearchInput.value.toLowerCase())
+        
+                        genreToSearchInput.value=""
+    
+                    }
 
-                    blankShowcase.innerHTML='<h2>Search results for the title: '+advancedSearchTitleInput.value+'<h2>'
+                    break;
 
-                    externalCalls.findBookByTitle(advancedSearchTitleInput.value)
+                case "title":
 
-                    advancedSearchTitleInput.value=""
+                    if(advancedSearchTitleInput.value===""){
 
-                }
+                        alert("Wait! You haven't entered anything to search the archive.\nFill in one of the fields to perform a search."); 
+
+                    }
+
+                    else{
+
+                        blankShowcase.innerHTML='<h2>Search results for the title: '+advancedSearchTitleInput.value+'<h2>'
+
+                        externalCalls.findBookByTitle(advancedSearchTitleInput.value)
+    
+                        advancedSearchTitleInput.value=""
+                    }
+
+                    break; 
+                
+                case "author":
+
+                    if(advancedSearchAuthorInput.value===""){
+
+                        alert("Wait! You haven't entered anything to search the archive.\nFill in one of the fields to perform a search."); 
+
+                    }
+
+                    else{
+
+                        blankShowcase.innerHTML='<h2>Search result for the author: '+advancedSearchAuthorInput.value+'<h2>'
+
+                        externalCalls.findAuthorKey(advancedSearchAuthorInput.value)
+    
+                        advancedSearchAuthorInput.value=""
+
+                    }
+
+                    break; 
+
+                default:
+
+                    alert("Wait! You haven't entered anything to search the archive.\nFill in one of the fields to perform a search.");
+
+                break;
             }
-            else{
 
-                blankShowcase.innerHTML='<h2>Search results for the genre: '+genreToSearchInput.value+'<h2>'
-
-                externalCalls.findBookByGenre(genreToSearchInput.value)
-
-                genreToSearchInput.value=""
-            } 
             break;
+        }
     }
-
-  })
+)
