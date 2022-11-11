@@ -85,3 +85,9 @@ function generateNewBook(title, authors,coverId,key,details){
 
     return generatedBook
 }
+
+//Called from main to empty the collection after a search
+
+export function emptyBookCollection(){
+    booksCollection.length = 0
+}

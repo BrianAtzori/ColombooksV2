@@ -24,6 +24,8 @@ import * as externalCalls from './scripts/external-calls.js'
 
 import * as popUpManager from './scripts/pop-ups.js'
 
+import {emptyBookCollection} from './scripts/data-manager'
+
 
 //--------- ELEMENTS ---------
 
@@ -53,7 +55,7 @@ const advancedSearchTitleInput = document.querySelector('.title-search-bar')
 
 //Showcase Elements
 
-const blankShowcase = document.querySelector('.books-showcase')
+const showcase = document.querySelector('.books-showcase')
 
 const loadingAnimation = document.querySelector('.loading-animation')
 
@@ -113,7 +115,14 @@ contentPage.addEventListener('click', function(event){
         
         case searchButton:
 
-            //Create loading animation ad search label for UX
+            //Check if another search has been done, then empty the showcase to clean
+
+            if(showcase.contains(document.querySelector('.book-container')))
+            {
+                emptyTheShowcase()
+            }
+
+            //Create search label for UX
             
             let searchLabel = document.createElement("h2")
 
@@ -137,7 +146,7 @@ contentPage.addEventListener('click', function(event){
 
                         searchLabel.innerText='Search results for the genre: '+genreToSearchInput.value
 
-                        blankShowcase.appendChild(searchLabel)
+                        showcase.appendChild(searchLabel)
 
                         searchLabel.parentNode.insertBefore(loadingAnimation, searchLabel.nextSibling)
 
@@ -163,7 +172,7 @@ contentPage.addEventListener('click', function(event){
 
                         searchLabel.innerText='Search results for the title: '+advancedSearchTitleInput.value
 
-                        blankShowcase.appendChild(searchLabel)
+                        showcase.appendChild(searchLabel)
 
                         searchLabel.parentNode.insertBefore(loadingAnimation, searchLabel.nextSibling)
 
@@ -189,7 +198,7 @@ contentPage.addEventListener('click', function(event){
 
                         searchLabel.innerText='Search results for the author: '+advancedSearchAuthorInput.value
 
-                        blankShowcase.appendChild(searchLabel)
+                        showcase.appendChild(searchLabel)
 
                         //https://attacomsian.com/blog/javascript-insert-element-after
 
@@ -214,3 +223,20 @@ contentPage.addEventListener('click', function(event){
         }
     }
 )
+
+//--------- FUNCTIONS ---------
+
+function emptyTheShowcase(){
+
+
+    let bookContainers=document.querySelectorAll('.book-container')
+
+    bookContainers.forEach(element => {
+        showcase.removeChild(element)
+    });
+
+    showcase.removeChild(showcase.firstElementChild)
+
+    emptyBookCollection()
+
+}

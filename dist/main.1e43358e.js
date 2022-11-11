@@ -338,6 +338,7 @@ function generateNewDetailsButtonElement(bookKey) {
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
+exports.emptyBookCollection = emptyBookCollection;
 exports.generateBooksCollection = generateBooksCollection;
 var _classes = _interopRequireDefault(require("./classes.js"));
 var showcaseGenerator = _interopRequireWildcard(require("./showcase-generator"));
@@ -399,6 +400,12 @@ function generateBooksCollection(responseFromApi, queryType, author) {
 function generateNewBook(title, authors, coverId, key, details) {
   var generatedBook = new _classes.default(title, authors, coverId, key, details);
   return generatedBook;
+}
+
+//Called from main to empty the collection after a search
+
+function emptyBookCollection() {
+  booksCollection.length = 0;
 }
 },{"./classes.js":"src/scripts/classes.js","./showcase-generator":"src/scripts/showcase-generator.js"}],"src/scripts/pop-ups.js":[function(require,module,exports) {
 "use strict";
@@ -6372,6 +6379,7 @@ require("./styles/search-section-style.scss");
 require("./styles/books-showcase-style.scss");
 var externalCalls = _interopRequireWildcard(require("./scripts/external-calls.js"));
 var popUpManager = _interopRequireWildcard(require("./scripts/pop-ups.js"));
+var _dataManager = require("./scripts/data-manager");
 function _getRequireWildcardCache(nodeInterop) { if (typeof WeakMap !== "function") return null; var cacheBabelInterop = new WeakMap(); var cacheNodeInterop = new WeakMap(); return (_getRequireWildcardCache = function (nodeInterop) { return nodeInterop ? cacheNodeInterop : cacheBabelInterop; })(nodeInterop); }
 function _interopRequireWildcard(obj, nodeInterop) { if (!nodeInterop && obj && obj.__esModule) { return obj; } if (obj === null || typeof obj !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(nodeInterop); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (key !== "default" && Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
 //To Do:
@@ -6411,7 +6419,7 @@ var advancedSearchTitleInput = document.querySelector('.title-search-bar');
 
 //Showcase Elements
 
-var blankShowcase = document.querySelector('.books-showcase');
+var showcase = document.querySelector('.books-showcase');
 var loadingAnimation = document.querySelector('.loading-animation');
 
 //--------- EVENT LISTENERS ---------
@@ -6442,7 +6450,13 @@ contentPage.addEventListener('click', function (event) {
       genreToSearchInput.value = "";
       break;
     case searchButton:
-      //Create loading animation ad search label for UX
+      //Check if another search has been done, then empty the showcase to clean
+
+      if (showcase.contains(document.querySelector('.book-container'))) {
+        emptyTheShowcase();
+      }
+
+      //Create search label for UX
 
       var searchLabel = document.createElement("h2");
 
@@ -6456,7 +6470,7 @@ contentPage.addEventListener('click', function (event) {
           } else {
             loadingAnimation.style.display = 'block';
             searchLabel.innerText = 'Search results for the genre: ' + genreToSearchInput.value;
-            blankShowcase.appendChild(searchLabel);
+            showcase.appendChild(searchLabel);
             searchLabel.parentNode.insertBefore(loadingAnimation, searchLabel.nextSibling);
             externalCalls.findBookByGenre(genreToSearchInput.value.toLowerCase());
             genreToSearchInput.value = "";
@@ -6468,7 +6482,7 @@ contentPage.addEventListener('click', function (event) {
           } else {
             loadingAnimation.style.display = 'block';
             searchLabel.innerText = 'Search results for the title: ' + advancedSearchTitleInput.value;
-            blankShowcase.appendChild(searchLabel);
+            showcase.appendChild(searchLabel);
             searchLabel.parentNode.insertBefore(loadingAnimation, searchLabel.nextSibling);
             externalCalls.findBookByTitle(advancedSearchTitleInput.value);
             advancedSearchTitleInput.value = "";
@@ -6480,7 +6494,7 @@ contentPage.addEventListener('click', function (event) {
           } else {
             loadingAnimation.style.display = 'block';
             searchLabel.innerText = 'Search results for the author: ' + advancedSearchAuthorInput.value;
-            blankShowcase.appendChild(searchLabel);
+            showcase.appendChild(searchLabel);
 
             //https://attacomsian.com/blog/javascript-insert-element-after
 
@@ -6496,7 +6510,18 @@ contentPage.addEventListener('click', function (event) {
       break;
   }
 });
-},{"./styles/general-style.scss":"src/styles/general-style.scss","./styles/header-style.scss":"src/styles/header-style.scss","./styles/search-section-style.scss":"src/styles/search-section-style.scss","./styles/books-showcase-style.scss":"src/styles/books-showcase-style.scss","./scripts/external-calls.js":"src/scripts/external-calls.js","./scripts/pop-ups.js":"src/scripts/pop-ups.js"}],"../../../../opt/homebrew/lib/node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
+
+//--------- FUNCTIONS ---------
+
+function emptyTheShowcase() {
+  var bookContainers = document.querySelectorAll('.book-container');
+  bookContainers.forEach(function (element) {
+    showcase.removeChild(element);
+  });
+  showcase.removeChild(showcase.firstElementChild);
+  (0, _dataManager.emptyBookCollection)();
+}
+},{"./styles/general-style.scss":"src/styles/general-style.scss","./styles/header-style.scss":"src/styles/header-style.scss","./styles/search-section-style.scss":"src/styles/search-section-style.scss","./styles/books-showcase-style.scss":"src/styles/books-showcase-style.scss","./scripts/external-calls.js":"src/scripts/external-calls.js","./scripts/pop-ups.js":"src/scripts/pop-ups.js","./scripts/data-manager":"src/scripts/data-manager.js"}],"../../../../opt/homebrew/lib/node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
 var OldModule = module.bundle.Module;
