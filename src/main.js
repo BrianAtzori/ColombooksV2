@@ -3,7 +3,6 @@
 //Lodash for path
 //Gestire risposta vuota se non trovo libri
 //Pulizia PopUp
-//Ordinare Libri
 //Gestire copertina undefined / array di copertine
 //Svuota dopo ricerca
 //migliorare grafica popup

@@ -377,6 +377,18 @@ function generateBooksCollection(responseFromApi, queryType, author) {
       break;
   }
 
+  //Sort the array using the titles by alphabetical order
+
+  booksCollection.sort(function (a, b) {
+    if (a.title > b.title) {
+      return 1;
+    }
+    if (b.title > a.title) {
+      return -1;
+    }
+    return 0;
+  });
+
   //Call the GUI Generation
 
   showcaseGenerator.generateNewBooksShowcase(booksCollection);
@@ -6365,7 +6377,6 @@ function _interopRequireWildcard(obj, nodeInterop) { if (!nodeInterop && obj && 
 //Lodash for path
 //Gestire risposta vuota se non trovo libri
 //Pulizia PopUp
-//Ordinare Libri
 //Gestire copertina undefined / array di copertine
 //Svuota dopo ricerca
 //migliorare grafica popup

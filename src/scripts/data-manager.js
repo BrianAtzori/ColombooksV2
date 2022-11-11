@@ -54,6 +54,24 @@ export function generateBooksCollection(responseFromApi, queryType, author)
 
     }
 
+    //Sort the array using the titles by alphabetical order
+
+    booksCollection.sort((a,b) =>{
+
+        if(a.title > b.title)
+        {
+            return 1;
+        }
+
+        if(b.title > a.title)
+        {
+            return -1;
+        }
+
+        return 0;
+
+    })
+
     //Call the GUI Generation
 
     showcaseGenerator.generateNewBooksShowcase(booksCollection)
