@@ -2,11 +2,8 @@
 //TryCatch su richieste
 //Lodash for path
 //Gestire risposta vuota se non trovo libri
-//Pulizia PopUp
 //Gestire copertina undefined / array di copertine
-//Svuota dopo ricerca
 //migliorare grafica popup
-//loading animations overwritten
 //animations
 
 //--------- IMPORTS ---------
@@ -44,8 +41,6 @@ const searchButton = document.querySelector('.search-button')
 
 const genreToSearchInput = document.querySelector('.genre-search-bar')
 
-const searchBarsContainers = document.querySelector('.search-container')
-
 //Advanced Search Elements
 
 const advancedSearchButton = document.querySelector('.advanced-search-button')
@@ -59,6 +54,8 @@ const advancedSearchTitleInput = document.querySelector('.title-search-bar')
 //Showcase Elements
 
 const blankShowcase = document.querySelector('.books-showcase')
+
+const loadingAnimation = document.querySelector('.loading-animation')
 
 
 //--------- EVENT LISTENERS ---------
@@ -116,8 +113,16 @@ contentPage.addEventListener('click', function(event){
         
         case searchButton:
 
-            let typeOfSearch = advancedSearchFieldsContainer.classList.contains('active') ? (advancedSearchAuthorInput.value === "" ? typeOfSearch="title" : typeOfSearch="author") : typeOfSearch = "genre"
+            //Create loading animation ad search label for UX
             
+            let searchLabel = document.createElement("h2")
+
+            loadingAnimation.style.display='block'
+
+            //Set type of search
+
+            let typeOfSearch = advancedSearchFieldsContainer.classList.contains('active') ? (advancedSearchAuthorInput.value === "" ? typeOfSearch="title" : typeOfSearch="author") : typeOfSearch = "genre"
+
             switch(typeOfSearch)
             {
                 case "genre":
@@ -130,7 +135,11 @@ contentPage.addEventListener('click', function(event){
 
                     else{
 
-                        blankShowcase.innerHTML='<h2>Search results for the genre: '+genreToSearchInput.value+'<h2>'
+                        searchLabel.innerText='Search results for the genre: '+genreToSearchInput.value
+
+                        blankShowcase.appendChild(searchLabel)
+
+                        searchLabel.parentNode.insertBefore(loadingAnimation, searchLabel.nextSibling)
 
                         externalCalls.findBookByGenre(genreToSearchInput.value.toLowerCase())
         
@@ -150,11 +159,16 @@ contentPage.addEventListener('click', function(event){
 
                     else{
 
-                        blankShowcase.innerHTML='<h2>Search results for the title: '+advancedSearchTitleInput.value+'<h2>'
+                        searchLabel.innerText='Search results for the title: '+advancedSearchTitleInput.value
+
+                        blankShowcase.appendChild(searchLabel)
+
+                        searchLabel.parentNode.insertBefore(loadingAnimation, searchLabel.nextSibling)
 
                         externalCalls.findBookByTitle(advancedSearchTitleInput.value)
     
                         advancedSearchTitleInput.value=""
+
                     }
 
                     break; 
@@ -169,7 +183,13 @@ contentPage.addEventListener('click', function(event){
 
                     else{
 
-                        blankShowcase.innerHTML='<h2>Search result for the author: '+advancedSearchAuthorInput.value+'<h2>'
+                        searchLabel.innerText='Search results for the author: '+advancedSearchAuthorInput.value
+
+                        blankShowcase.appendChild(searchLabel)
+
+                        //https://attacomsian.com/blog/javascript-insert-element-after
+
+                        searchLabel.parentNode.insertBefore(loadingAnimation, searchLabel.nextSibling)
 
                         externalCalls.findAuthorKey(advancedSearchAuthorInput.value)
     

@@ -6222,7 +6222,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
 require('dotenv').config();
 var axios = require('axios').default;
-var loadingAnimation = document.querySelector('.loading-animation');
+var loadingAnimationRunning = document.querySelector('.loading-animation');
 
 //--------- FUNCTIONS ---------
 
@@ -6244,16 +6244,15 @@ function _findBookByGenre() {
       while (1) {
         switch (_context.prev = _context.next) {
           case 0:
-            loadingAnimation.style.display = "block";
             axios({
               method: 'get',
               url: createUrl("/subjects/", genre + ".json")
             }).then(function (response) {
               return dataManager.generateBooksCollection(response.data, "byGenre");
             }).finally(function () {
-              return loadingAnimation.style.display = "none";
+              return loadingAnimationRunning.style.display = "none";
             });
-          case 2:
+          case 1:
           case "end":
             return _context.stop();
         }
@@ -6271,16 +6270,15 @@ function _findBookByAuthor() {
       while (1) {
         switch (_context2.prev = _context2.next) {
           case 0:
-            loadingAnimation.style.display = "block";
             axios({
               method: 'get',
               url: createUrl("/authors/", key + "/works.json")
             }).then(function (response) {
               return dataManager.generateBooksCollection(response.data, "byAuthor", author);
             }).finally(function () {
-              return loadingAnimation.style.display = "none";
+              return loadingAnimationRunning.style.display = "none";
             });
-          case 2:
+          case 1:
           case "end":
             return _context2.stop();
         }
@@ -6298,16 +6296,15 @@ function _findBookByTitle() {
       while (1) {
         switch (_context3.prev = _context3.next) {
           case 0:
-            loadingAnimation.style.display = "block";
             axios({
               method: 'get',
               url: createUrl("/search.json?q=", title)
             }).then(function (response) {
               return dataManager.generateBooksCollection(response.data, "byTitle");
             }).finally(function () {
-              return loadingAnimation.style.display = "none";
+              return loadingAnimationRunning.style.display = "none";
             });
-          case 2:
+          case 1:
           case "end":
             return _context3.stop();
         }
@@ -6381,11 +6378,8 @@ function _interopRequireWildcard(obj, nodeInterop) { if (!nodeInterop && obj && 
 //TryCatch su richieste
 //Lodash for path
 //Gestire risposta vuota se non trovo libri
-//Pulizia PopUp
 //Gestire copertina undefined / array di copertine
-//Svuota dopo ricerca
 //migliorare grafica popup
-//loading animations overwritten
 //animations
 
 //--------- IMPORTS ---------
@@ -6407,7 +6401,6 @@ var popUpWindowCloseButton = document.querySelector('.popup-window-close-button'
 
 var searchButton = document.querySelector('.search-button');
 var genreToSearchInput = document.querySelector('.genre-search-bar');
-var searchBarsContainers = document.querySelector('.search-container');
 
 //Advanced Search Elements
 
@@ -6419,6 +6412,7 @@ var advancedSearchTitleInput = document.querySelector('.title-search-bar');
 //Showcase Elements
 
 var blankShowcase = document.querySelector('.books-showcase');
+var loadingAnimation = document.querySelector('.loading-animation');
 
 //--------- EVENT LISTENERS ---------
 
@@ -6448,13 +6442,22 @@ contentPage.addEventListener('click', function (event) {
       genreToSearchInput.value = "";
       break;
     case searchButton:
+      //Create loading animation ad search label for UX
+
+      var searchLabel = document.createElement("h2");
+      loadingAnimation.style.display = 'block';
+
+      //Set type of search
+
       var typeOfSearch = advancedSearchFieldsContainer.classList.contains('active') ? advancedSearchAuthorInput.value === "" ? typeOfSearch = "title" : typeOfSearch = "author" : typeOfSearch = "genre";
       switch (typeOfSearch) {
         case "genre":
           if (genreToSearchInput.value === "") {
             alert("Wait! You haven't entered anything to search the archive.\nFill in one of the fields to perform a search.");
           } else {
-            blankShowcase.innerHTML = '<h2>Search results for the genre: ' + genreToSearchInput.value + '<h2>';
+            searchLabel.innerText = 'Search results for the genre: ' + genreToSearchInput.value;
+            blankShowcase.appendChild(searchLabel);
+            searchLabel.parentNode.insertBefore(loadingAnimation, searchLabel.nextSibling);
             externalCalls.findBookByGenre(genreToSearchInput.value.toLowerCase());
             genreToSearchInput.value = "";
           }
@@ -6463,7 +6466,9 @@ contentPage.addEventListener('click', function (event) {
           if (advancedSearchTitleInput.value === "") {
             alert("Wait! You haven't entered anything to search the archive.\nFill in one of the fields to perform a search.");
           } else {
-            blankShowcase.innerHTML = '<h2>Search results for the title: ' + advancedSearchTitleInput.value + '<h2>';
+            searchLabel.innerText = 'Search results for the title: ' + advancedSearchTitleInput.value;
+            blankShowcase.appendChild(searchLabel);
+            searchLabel.parentNode.insertBefore(loadingAnimation, searchLabel.nextSibling);
             externalCalls.findBookByTitle(advancedSearchTitleInput.value);
             advancedSearchTitleInput.value = "";
           }
@@ -6472,7 +6477,12 @@ contentPage.addEventListener('click', function (event) {
           if (advancedSearchAuthorInput.value === "") {
             alert("Wait! You haven't entered anything to search the archive.\nFill in one of the fields to perform a search.");
           } else {
-            blankShowcase.innerHTML = '<h2>Search result for the author: ' + advancedSearchAuthorInput.value + '<h2>';
+            searchLabel.innerText = 'Search results for the author: ' + advancedSearchAuthorInput.value;
+            blankShowcase.appendChild(searchLabel);
+
+            //https://attacomsian.com/blog/javascript-insert-element-after
+
+            searchLabel.parentNode.insertBefore(loadingAnimation, searchLabel.nextSibling);
             externalCalls.findAuthorKey(advancedSearchAuthorInput.value);
             advancedSearchAuthorInput.value = "";
           }
