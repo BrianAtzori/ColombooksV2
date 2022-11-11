@@ -6445,7 +6445,6 @@ contentPage.addEventListener('click', function (event) {
       //Create loading animation ad search label for UX
 
       var searchLabel = document.createElement("h2");
-      loadingAnimation.style.display = 'block';
 
       //Set type of search
 
@@ -6455,6 +6454,7 @@ contentPage.addEventListener('click', function (event) {
           if (genreToSearchInput.value === "") {
             alert("Wait! You haven't entered anything to search the archive.\nFill in one of the fields to perform a search.");
           } else {
+            loadingAnimation.style.display = 'block';
             searchLabel.innerText = 'Search results for the genre: ' + genreToSearchInput.value;
             blankShowcase.appendChild(searchLabel);
             searchLabel.parentNode.insertBefore(loadingAnimation, searchLabel.nextSibling);
@@ -6466,6 +6466,7 @@ contentPage.addEventListener('click', function (event) {
           if (advancedSearchTitleInput.value === "") {
             alert("Wait! You haven't entered anything to search the archive.\nFill in one of the fields to perform a search.");
           } else {
+            loadingAnimation.style.display = 'block';
             searchLabel.innerText = 'Search results for the title: ' + advancedSearchTitleInput.value;
             blankShowcase.appendChild(searchLabel);
             searchLabel.parentNode.insertBefore(loadingAnimation, searchLabel.nextSibling);
@@ -6477,6 +6478,7 @@ contentPage.addEventListener('click', function (event) {
           if (advancedSearchAuthorInput.value === "") {
             alert("Wait! You haven't entered anything to search the archive.\nFill in one of the fields to perform a search.");
           } else {
+            loadingAnimation.style.display = 'block';
             searchLabel.innerText = 'Search results for the author: ' + advancedSearchAuthorInput.value;
             blankShowcase.appendChild(searchLabel);
 

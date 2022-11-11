@@ -117,8 +117,6 @@ contentPage.addEventListener('click', function(event){
             
             let searchLabel = document.createElement("h2")
 
-            loadingAnimation.style.display='block'
-
             //Set type of search
 
             let typeOfSearch = advancedSearchFieldsContainer.classList.contains('active') ? (advancedSearchAuthorInput.value === "" ? typeOfSearch="title" : typeOfSearch="author") : typeOfSearch = "genre"
@@ -134,6 +132,8 @@ contentPage.addEventListener('click', function(event){
                     }
 
                     else{
+
+                        loadingAnimation.style.display='block'
 
                         searchLabel.innerText='Search results for the genre: '+genreToSearchInput.value
 
@@ -159,6 +159,8 @@ contentPage.addEventListener('click', function(event){
 
                     else{
 
+                        loadingAnimation.style.display='block'
+
                         searchLabel.innerText='Search results for the title: '+advancedSearchTitleInput.value
 
                         blankShowcase.appendChild(searchLabel)
@@ -182,6 +184,8 @@ contentPage.addEventListener('click', function(event){
                     }
 
                     else{
+
+                        loadingAnimation.style.display='block'
 
                         searchLabel.innerText='Search results for the author: '+advancedSearchAuthorInput.value
 
