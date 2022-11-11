@@ -6,7 +6,7 @@ export default class Book{
 
         this.title=title
 
-        this.author=author
+        this.author= author === undefined ? "Author not available" : author
 
         this.coverId=coverId
 

@@ -200,7 +200,7 @@ var Book = /*#__PURE__*/function () {
   function Book(title, author, coverId, key) {
     _classCallCheck(this, Book);
     this.title = title;
-    this.author = author;
+    this.author = author === undefined ? "Author not available" : author;
     this.coverId = coverId;
     this.key = key;
   }
