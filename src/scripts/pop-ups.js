@@ -25,9 +25,11 @@ export function generatePopUp(popUpType,data)
 
         case 'details':
 
+            data = data === undefined ? "The book description is not available in the archive." : data
+
             popUpWindowTitle.innerHTML = 'Description:'
 
-            popUpWindowBody.innerHTML = data
+            popUpWindowBody.innerHTML = data 
 
             popUpWindow.classList.add('active')
             break;

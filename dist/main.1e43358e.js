@@ -414,6 +414,7 @@ function generatePopUp(popUpType, data) {
       popUpWindow.classList.add('active');
       break;
     case 'details':
+      data = data === undefined ? "The book description is not available in the archive." : data;
       popUpWindowTitle.innerHTML = 'Description:';
       popUpWindowBody.innerHTML = data;
       popUpWindow.classList.add('active');
@@ -6365,7 +6366,6 @@ function _interopRequireWildcard(obj, nodeInterop) { if (!nodeInterop && obj && 
 //Gestire risposta vuota se non trovo libri
 //Pulizia PopUp
 //Ordinare Libri
-//Gestire descrizione Undefined
 //Gestire copertina undefined / array di copertine
 //Svuota dopo ricerca
 //migliorare grafica popup
@@ -6493,7 +6493,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "49507" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "49651" + '/');
   ws.onmessage = function (event) {
     checkedAssets = {};
     assetsToAccept = [];
