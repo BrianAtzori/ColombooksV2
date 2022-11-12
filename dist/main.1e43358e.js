@@ -209,7 +209,9 @@ var Book = /*#__PURE__*/function () {
   _createClass(Book, [{
     key: "retrieveCover",
     value: function retrieveCover() {
-      var coverUrl = "https://covers.openlibrary.org/b/id/" + this.coverId + "-L.jpg";
+      var coverUrl = "";
+      var retrievedCover = "https://covers.openlibrary.org/b/id/" + this.coverId + "-L.jpg";
+      coverUrl = retrievedCover === undefined ? "https://dummyimage.com/80x100/22a15d/fcfcfc.png&text=+NOT+FOUND" : retrievedCover;
 
       //console.log(coverUrl)
 

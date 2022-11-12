@@ -18,7 +18,11 @@ export default class Book{
 
     retrieveCover(){
 
-        let coverUrl = process.env.COVER_BASE_URL+this.coverId+"-L.jpg"
+        let coverUrl=""
+
+        let retrievedCover = process.env.COVER_BASE_URL+this.coverId+"-L.jpg"
+
+        coverUrl = retrievedCover === undefined ? "https://dummyimage.com/80x100/22a15d/fcfcfc.png&text=+NOT+FOUND" : retrievedCover
 
         //console.log(coverUrl)
         
