@@ -1,7 +1,7 @@
 //To Do:
 //TryCatch su richieste
 //Lodash for path
-//Gestire risposta vuota se non trovo libri
+//Gestire risposta vuota se non trovo libri (work_count:0)(numFound:0) (work_count:0)
 
 //--------- IMPORTS ---------
 
