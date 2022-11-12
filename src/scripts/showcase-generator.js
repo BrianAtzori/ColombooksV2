@@ -29,6 +29,7 @@ export function generateNewBooksShowcase(booksCollection)
 
 export function generateBookContainer(Book)
 {
+    
     const elementsArray =[]
 
     let newBookContainer=document.createElement('div')
@@ -60,12 +61,14 @@ export function generateBookContainer(Book)
     }
 
     return newBookContainer
+
 }
 
 //Generate HTML Elements
 
 export function generateNewCoverElement(coverUrl, title, author)
 {
+
     let generatedBookCover = document.createElement("img")
 
     generatedBookCover.classList.add('book-cover')
@@ -79,10 +82,12 @@ export function generateNewCoverElement(coverUrl, title, author)
     generatedBookCover.alt ="Cover of the book "+title+" written by "+author
 
     return generatedBookCover
+
 }
 
 export function generateNewTitleElement(title)
 {
+
     let generatedBookTitle = document.createElement('p')
 
     generatedBookTitle.classList.add('title-label')
@@ -90,10 +95,12 @@ export function generateNewTitleElement(title)
     generatedBookTitle.innerText="\""+title+"\""
 
     return generatedBookTitle
+
 }
 
 export function generateNewAuthorElement(author)
 {
+
     let generatedBookAuthor = document.createElement('p')
 
     generatedBookAuthor.classList.add('author-label')
@@ -101,10 +108,12 @@ export function generateNewAuthorElement(author)
     generatedBookAuthor.innerText=author
 
     return generatedBookAuthor
+
 }
 
 export function generateNewDetailsButtonElement(bookKey)
 {
+
     let generatedDetailsButton = document.createElement('input')
 
     generatedDetailsButton.type = 'button'
@@ -126,4 +135,5 @@ export function generateNewDetailsButtonElement(bookKey)
     })
 
     return generatedDetailsButton
+
 }

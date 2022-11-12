@@ -209,9 +209,7 @@ var Book = /*#__PURE__*/function () {
   _createClass(Book, [{
     key: "retrieveCover",
     value: function retrieveCover() {
-      var coverUrl = "";
-      var retrievedCover = "https://covers.openlibrary.org/b/id/" + this.coverId + "-L.jpg";
-      coverUrl = retrievedCover === undefined ? "https://dummyimage.com/80x100/22a15d/fcfcfc.png&text=+NOT+FOUND" : retrievedCover;
+      var coverUrl = this.coverId === undefined ? "https://dummyimage.com/80x100/22a15d/fcfcfc.png&text=+NOT+FOUND" : "https://covers.openlibrary.org/b/id/" + this.coverId + "-L.jpg";
 
       //console.log(coverUrl)
 
@@ -367,7 +365,7 @@ function generateBooksCollection(responseFromApi, queryType, author) {
       break;
     case 'byAuthor':
       for (var _i = 0; _i < responseFromApi.entries.length; _i++) {
-        var _newBook = generateNewBook(responseFromApi.entries[_i].title, author, responseFromApi.entries[_i].covers, responseFromApi.entries[_i].key);
+        var _newBook = generateNewBook(responseFromApi.entries[_i].title, author, selectCover(responseFromApi.entries[_i].covers), responseFromApi.entries[_i].key);
         booksCollection.push(_newBook);
       }
       break;
@@ -408,6 +406,18 @@ function generateNewBook(title, authors, coverId, key, details) {
 
 function emptyBookCollection() {
   booksCollection.length = 0;
+}
+
+//Used to manage multiple covers output returned from searchByAuthor
+
+function selectCover(covers) {
+  var coversArray = [];
+  coversArray = covers != undefined ? covers.toString().split(",") : undefined;
+  if (coversArray != undefined) {
+    return coversArray[0];
+  } else {
+    return undefined;
+  }
 }
 },{"./classes.js":"src/scripts/classes.js","./showcase-generator":"src/scripts/showcase-generator.js"}],"src/scripts/pop-ups.js":[function(require,module,exports) {
 "use strict";
@@ -6388,7 +6398,6 @@ function _interopRequireWildcard(obj, nodeInterop) { if (!nodeInterop && obj && 
 //TryCatch su richieste
 //Lodash for path
 //Gestire risposta vuota se non trovo libri
-//Gestire copertina undefined / array di copertine
 
 //--------- IMPORTS ---------
 

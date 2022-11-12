@@ -2,7 +2,6 @@
 //TryCatch su richieste
 //Lodash for path
 //Gestire risposta vuota se non trovo libri
-//Gestire copertina undefined / array di copertine
 
 //--------- IMPORTS ---------
 

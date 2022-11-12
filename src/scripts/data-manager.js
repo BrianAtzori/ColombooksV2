@@ -16,25 +16,31 @@ const booksCollection = []
 
 export function generateBooksCollection(responseFromApi, queryType, author)
 {
+
     switch(queryType)
     {
         case 'byGenre':
 
-                for (let i=0; i < responseFromApi.works.length; i++){
+                for (let i=0; i < responseFromApi.works.length; i++)
+                {
 
                     let newBook = generateNewBook(responseFromApi.works[i].title, responseFromApi.works[i].authors[0].name,responseFromApi.works[i].cover_id, responseFromApi.works[i].key)
 
                     booksCollection.push(newBook)
+
                 }
+
                 break;
 
         case 'byAuthor':
 
-                for(let i=0; i<responseFromApi.entries.length; i++){
+                for(let i=0; i<responseFromApi.entries.length; i++)
+                {
 
-                     let newBook = generateNewBook(responseFromApi.entries[i].title, author,responseFromApi.entries[i].covers, responseFromApi.entries[i].key)
+                    let newBook = generateNewBook(responseFromApi.entries[i].title, author, selectCover(responseFromApi.entries[i].covers), responseFromApi.entries[i].key)
 
                     booksCollection.push(newBook)
+
                 }
 
                 break;
@@ -43,11 +49,13 @@ export function generateBooksCollection(responseFromApi, queryType, author)
 
                 console.log(responseFromApi)
 
-                for(let i=0; i<responseFromApi.docs.length; i++){
+                for(let i=0; i<responseFromApi.docs.length; i++)
+                {
 
                     let newBook = generateNewBook(responseFromApi.docs[i].title, responseFromApi.docs[i].author_name,responseFromApi.docs[i].cover_i, responseFromApi.docs[i].key)
 
                     booksCollection.push(newBook)
+
                 }
 
                 break;
@@ -75,19 +83,48 @@ export function generateBooksCollection(responseFromApi, queryType, author)
     //Call the GUI Generation
 
     showcaseGenerator.generateNewBooksShowcase(booksCollection)
+
 }
 
 //Create the Book with the constructor using given data
 
-function generateNewBook(title, authors,coverId,key,details){
+function generateNewBook(title, authors,coverId,key,details)
+{
 
     let generatedBook = new Book(title,authors,coverId,key, details)
 
     return generatedBook
+
 }
 
 //Called from main to empty the collection after a search
 
-export function emptyBookCollection(){
+export function emptyBookCollection()
+{
+
     booksCollection.length = 0
+
+}
+
+//Used to manage multiple covers output returned from searchByAuthor
+
+function selectCover(covers)
+{
+    let coversArray = []
+
+    coversArray = covers != undefined ? covers.toString().split(",") : undefined
+
+    if (coversArray != undefined)
+    {
+
+        return coversArray[0]
+
+    }
+    else
+    {
+
+        return undefined
+
+    }
+
 }

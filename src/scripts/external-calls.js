@@ -75,6 +75,7 @@ export async function findBookByTitle(title){
     .then((response) => dataManager.generateBooksCollection(response.data,"byTitle"))
 
     .finally(() => loadingAnimationRunning.style.display="none")
+    
 }
 
 //Fetch the Description of the book and call the popup to show the text
@@ -85,8 +86,11 @@ export async function fetchBookDescription(bookKey)
         method: 'get',
         url: createUrl("/",bookKey.substring(1)+".json")
     })
+
     .then((response) => response.data.description)
+
     .then((description) =>  popUpManager.generatePopUp("details",description))
+
 }
 
 //Auxiliary function to retrieve the author key and the name for the output
@@ -97,5 +101,7 @@ export async function findAuthorKey(author){
         method: 'get',
         url: createUrl("/search/","authors.json?q="+author)
     })
+
     .then((response) => findBookByAuthor(response.data.docs[0].key,response.data.docs[0].name));
+
 }
