@@ -12,6 +12,7 @@
     padding-right: 40px;
     max-width:20px; 
     max-height:20px;
+    cursor: help;
 }
 
 .search-container{
@@ -52,6 +53,7 @@
     border-radius: 20px;
     border: 1.5px #264653 solid;
     margin-right: 5px;
+    cursor: pointer;
 }
 
 .advanced-search-button {
@@ -62,6 +64,7 @@
     border-radius: 20px;
     border: 1.5px #264653 solid;
     margin-left: 5px;
+    cursor: pointer;
 }
 
 .advanced-search-input-container{
@@ -184,3 +187,4 @@
     }
 
 }
+
