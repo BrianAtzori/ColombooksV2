@@ -44,14 +44,19 @@ p > a {
 .popup-window {
   position: fixed;
   left: 50%;
+  bottom: 60%;
   transform: translate(-50%, 50%) scale(0);
   transition: ease-in-out 200ms;
-  border: 1px solid black;
+  border: 1px solid #264653;
   border-radius: 10px;
   z-index: 10;
   background-color: white;
   width: 500px;
   max-width: 80%;
+  max-height: 50%;
+  overflow: scroll;
+  overflow-y: scroll;
+  opacity: 0.85;
 }
 
 .popup-window.active {
@@ -61,9 +66,9 @@ p > a {
 .popup-window-header {
   padding: 10px 15px;
   display: flex;
-  justify-content: space-around;
+  justify-content: space-between;
   align-items: center;
-  border-bottom: 1px solid black;
+  border-bottom: 2px solid #264653;
 }
 
 .popup-window-header .popup-window-title {
