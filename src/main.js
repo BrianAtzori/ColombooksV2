@@ -4,7 +4,6 @@
 //Gestire risposta vuota se non trovo libri
 //Gestire copertina undefined / array di copertine
 //migliorare grafica popup
-//animations
 
 //--------- IMPORTS ---------
 

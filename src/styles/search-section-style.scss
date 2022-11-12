@@ -13,6 +13,7 @@
     max-width:20px; 
     max-height:20px;
     cursor: help;
+    animation: wiggle 10s linear infinite;
 }
 
 .search-container{
@@ -54,6 +55,7 @@
     border: 1.5px #264653 solid;
     margin-right: 5px;
     cursor: pointer;
+    animation: wiggle 10s linear infinite;
 }
 
 .advanced-search-button {
@@ -187,4 +189,29 @@
     }
 
 }
+
+/* Keyframes */
+@keyframes wiggle {
+    0%, 7% {
+      transform: rotateZ(0);
+    }
+    15% {
+      transform: rotateZ(-15deg);
+    }
+    20% {
+      transform: rotateZ(10deg);
+    }
+    25% {
+      transform: rotateZ(-10deg);
+    }
+    30% {
+      transform: rotateZ(6deg);
+    }
+    35% {
+      transform: rotateZ(-4deg);
+    }
+    40%, 100% {
+      transform: rotateZ(0);
+    }
+  }
 
