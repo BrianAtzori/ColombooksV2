@@ -1,6 +1,3 @@
-//To Do:
-//Lodash for path
-
 //--------- IMPORTS ---------
 
 //Styles
