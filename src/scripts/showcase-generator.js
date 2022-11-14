@@ -137,3 +137,14 @@ export function generateNewDetailsButtonElement(bookKey)
     return generatedDetailsButton
 
 }
+
+export function generateBlankShowcase()
+{
+
+    let blankLabel = document.createElement('h2')
+
+    blankLabel.innerText = "There are no books matching the parameters! Try with something else :("
+
+    booksShowcaseDiv.appendChild(blankLabel)
+
+}

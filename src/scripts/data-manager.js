@@ -15,7 +15,7 @@ const booksCollection = []
 //Create an Array of Books, generating the books with the data from the api depending on the type of query
 
 export function generateBooksCollection(responseFromApi, queryType, author)
-{
+{   
 
     switch(queryType)
     {
@@ -82,7 +82,19 @@ export function generateBooksCollection(responseFromApi, queryType, author)
 
     //Call the GUI Generation
 
-    showcaseGenerator.generateNewBooksShowcase(booksCollection)
+    console.log(booksCollection)
+
+    if(booksCollection.length === 0){
+
+        showcaseGenerator.generateBlankShowcase()
+
+    }
+
+    else{
+
+        showcaseGenerator.generateNewBooksShowcase(booksCollection)
+
+    }
 
 }
 

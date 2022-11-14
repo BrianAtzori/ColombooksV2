@@ -58,6 +58,7 @@ export async function findBookByAuthor(key,author){
     .then((response) => dataManager.generateBooksCollection(response.data,"byAuthor",author))
 
     .finally(() => loadingAnimationRunning.style.display="none")
+    
 }
 
 //Fetch Request to API, searching by Title

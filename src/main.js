@@ -1,7 +1,5 @@
 //To Do:
-//TryCatch su richieste
 //Lodash for path
-//Gestire risposta vuota se non trovo libri (work_count:0)(numFound:0) (work_count:0)
 
 //--------- IMPORTS ---------
 
@@ -114,7 +112,7 @@ contentPage.addEventListener('click', function(event){
 
             //Check if another search has been done, then empty the showcase to clean
 
-            if(showcase.contains(document.querySelector('.book-container')))
+            if((showcase.contains(document.querySelector('.book-container'))) || (showcase.contains(document.querySelector('h2'))))
             {
                 emptyTheShowcase()
             }
@@ -225,14 +223,17 @@ contentPage.addEventListener('click', function(event){
 
 function emptyTheShowcase(){
 
+    let bookContainers = document.querySelectorAll('.book-container')
 
-    let bookContainers=document.querySelectorAll('.book-container')
+    let labels = showcase.querySelectorAll('h2')
 
     bookContainers.forEach(element => {
         showcase.removeChild(element)
     });
 
-    showcase.removeChild(showcase.firstElementChild)
+    labels.forEach(element => {
+        showcase.removeChild(element)
+    });
 
     emptyBookCollection()
 
