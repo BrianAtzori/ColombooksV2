@@ -4,6 +4,8 @@ import * as dataManager from './data-manager';
 
 import * as popUpManager from './pop-ups.js';
 
+import * as showcaseGenerator from './showcase-generator'
+
 
 //--------- DECLARATIONS ---------
 
@@ -42,6 +44,8 @@ export async function findBookByGenre(genre){
 
     .finally(() => loadingAnimationRunning.style.display="none")
 
+    .catch(err => alert("Oh no! Something went wrong, contact me with these error details:\n" + err))
+
 }
 
 //Fetch Request to API, searching by Author
@@ -58,7 +62,9 @@ export async function findBookByAuthor(key,author){
     .then((response) => dataManager.generateBooksCollection(response.data,"byAuthor",author))
 
     .finally(() => loadingAnimationRunning.style.display="none")
-    
+
+    .catch(err => alert("Oh no! Something went wrong, contact me with these error details:\n" + err))
+
 }
 
 //Fetch Request to API, searching by Title
@@ -76,6 +82,8 @@ export async function findBookByTitle(title){
     .then((response) => dataManager.generateBooksCollection(response.data,"byTitle"))
 
     .finally(() => loadingAnimationRunning.style.display="none")
+
+    .catch(err => alert("Oh no! Something went wrong, contact me with these error details:\n" + err))
     
 }
 
@@ -92,6 +100,8 @@ export async function fetchBookDescription(bookKey)
 
     .then((description) =>  popUpManager.generatePopUp("details",description))
 
+    .catch(err => alert("Oh no! Something went wrong, contact me with these error details:\n" + err))
+
 }
 
 //Auxiliary function to retrieve the author key and the name for the output
@@ -103,6 +113,8 @@ export async function findAuthorKey(author){
         url: createUrl("/search/","authors.json?q="+author)
     })
 
-    .then((response) => findBookByAuthor(response.data.docs[0].key,response.data.docs[0].name));
+    .then((response) => findBookByAuthor(response.data.docs[0].key,response.data.docs[0].name))
+
+    .catch(err => showcaseGenerator.generateBlankShowcase())
 
 }

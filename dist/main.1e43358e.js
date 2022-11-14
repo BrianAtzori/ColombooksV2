@@ -6242,6 +6242,7 @@ exports.findBookByGenre = findBookByGenre;
 exports.findBookByTitle = findBookByTitle;
 var dataManager = _interopRequireWildcard(require("./data-manager"));
 var popUpManager = _interopRequireWildcard(require("./pop-ups.js"));
+var showcaseGenerator = _interopRequireWildcard(require("./showcase-generator"));
 function _getRequireWildcardCache(nodeInterop) { if (typeof WeakMap !== "function") return null; var cacheBabelInterop = new WeakMap(); var cacheNodeInterop = new WeakMap(); return (_getRequireWildcardCache = function (nodeInterop) { return nodeInterop ? cacheNodeInterop : cacheBabelInterop; })(nodeInterop); }
 function _interopRequireWildcard(obj, nodeInterop) { if (!nodeInterop && obj && obj.__esModule) { return obj; } if (obj === null || typeof obj !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(nodeInterop); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (key !== "default" && Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
 function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) { return typeof obj; } : function (obj) { return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }, _typeof(obj); }
@@ -6281,6 +6282,8 @@ function _findBookByGenre() {
               return dataManager.generateBooksCollection(response.data, "byGenre");
             }).finally(function () {
               return loadingAnimationRunning.style.display = "none";
+            }).catch(function (err) {
+              return alert("Oh no! Something went wrong, contact me with these error details:\n" + err);
             });
           case 1:
           case "end":
@@ -6307,6 +6310,8 @@ function _findBookByAuthor() {
               return dataManager.generateBooksCollection(response.data, "byAuthor", author);
             }).finally(function () {
               return loadingAnimationRunning.style.display = "none";
+            }).catch(function (err) {
+              return alert("Oh no! Something went wrong, contact me with these error details:\n" + err);
             });
           case 1:
           case "end":
@@ -6333,6 +6338,8 @@ function _findBookByTitle() {
               return dataManager.generateBooksCollection(response.data, "byTitle");
             }).finally(function () {
               return loadingAnimationRunning.style.display = "none";
+            }).catch(function (err) {
+              return alert("Oh no! Something went wrong, contact me with these error details:\n" + err);
             });
           case 1:
           case "end":
@@ -6359,6 +6366,8 @@ function _fetchBookDescription() {
               return response.data.description;
             }).then(function (description) {
               return popUpManager.generatePopUp("details", description);
+            }).catch(function (err) {
+              return alert("Oh no! Something went wrong, contact me with these error details:\n" + err);
             });
           case 1:
           case "end":
@@ -6383,6 +6392,8 @@ function _findAuthorKey() {
               url: createUrl("/search/", "authors.json?q=" + author)
             }).then(function (response) {
               return findBookByAuthor(response.data.docs[0].key, response.data.docs[0].name);
+            }).catch(function (err) {
+              return showcaseGenerator.generateBlankShowcase();
             });
           case 1:
           case "end":
@@ -6393,7 +6404,7 @@ function _findAuthorKey() {
   }));
   return _findAuthorKey.apply(this, arguments);
 }
-},{"./data-manager":"src/scripts/data-manager.js","./pop-ups.js":"src/scripts/pop-ups.js","dotenv":"node_modules/dotenv/lib/main.js","axios":"node_modules/axios/index.js"}],"src/main.js":[function(require,module,exports) {
+},{"./data-manager":"src/scripts/data-manager.js","./pop-ups.js":"src/scripts/pop-ups.js","./showcase-generator":"src/scripts/showcase-generator.js","dotenv":"node_modules/dotenv/lib/main.js","axios":"node_modules/axios/index.js"}],"src/main.js":[function(require,module,exports) {
 "use strict";
 
 require("./styles/general-style.scss");
