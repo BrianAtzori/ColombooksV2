@@ -2,7 +2,7 @@
 
 //Styles
 
-import './styles/general-style.scss';
+import  './styles/general-style.scss';
 
 import './styles/header-style.scss';
 
