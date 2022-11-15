@@ -1,9 +1,10 @@
 .logo-container {
   display: flex;
-  align-self: center;
+  align-self: flex-start;
   align-items: flex-start;
   justify-content: space-around;
   width: 100%;
+  background-color: #fff;
 }
 .logo-container .page-logo {
   width: 95%;

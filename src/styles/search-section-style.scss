@@ -1,10 +1,10 @@
 .search-bars-container{
     display: flex;
-    justify-content: space-around;
+    justify-content: flex-start;
     align-items: center;
     flex-direction: column;
     width: 100%;
-    height: 40%;
+    background-color:blue;
 }
 
 .icon-info{
@@ -42,12 +42,13 @@
 .search-buttons-container{
     display: flex;
     justify-content: center;
-    width: 100%;
+    width: 80%;
     padding-top: 20px;
+    background-color: aquamarine;
 }
 
 .search-button{
-    width: 35%;
+    width: 30%;
     height: 30px;
     background-color: #2A9D8F;
     color: white;
@@ -58,7 +59,7 @@
 }
 
 .advanced-search-button {
-    width: 40%;
+    width: 70%;
     height: 30px;
     background-color: #264653;
     color: white;
