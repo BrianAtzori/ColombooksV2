@@ -4,7 +4,6 @@
     align-items: center;
     flex-direction: column;
     width: 100%;
-    background-color:blue;
 }
 
 .icon-info{
@@ -41,10 +40,10 @@
 
 .search-buttons-container{
     display: flex;
-    justify-content: center;
+    justify-content: space-between;
+    align-items: center;
     width: 80%;
     padding-top: 20px;
-    background-color: aquamarine;
 }
 
 .search-button{
@@ -92,21 +91,24 @@
     
     .search-bars-container{
         width: 70%;
-        height: 40%;
     }
 
     .icon-info{
         padding-right: 55px;
     }
 
+    .search-buttons-container{
+        justify-content: space-around;
+    }
+
     .search-button{
-        width: 25%;
+        width: 35%;
         height: 30px;
         margin-right: 10px;
     }
     
     .advanced-search-button {
-        width: 30%;
+        width: 50%;
         height: 30px;
         margin-left: 10px;
     }
@@ -118,21 +120,24 @@
 
     .search-bars-container{
         width: 50%;
-        height: 40%;
     }
 
     .icon-info{
         padding-right: 55px;
     }
 
+    .search-buttons-container{
+        justify-content: space-around;
+    }
+
     .search-button{
-        width: 25%;
+        width: 40%;
         height: 30px;
         margin-right: 10px;
     }
     
     .advanced-search-button {
-        width: 30%;
+        width: 50%;
         height: 30px;
         margin-left: 10px;
     }
@@ -143,11 +148,14 @@
     
     .search-bars-container{
         width: 40%;
-        height: 40%;
     }
 
     .icon-info{
         padding-right: 65px;
+    }
+
+    .search-buttons-container{
+        justify-content: center;
     }
 
     .search-button{
@@ -157,7 +165,7 @@
     }
     
     .advanced-search-button {
-        width: 30%;
+        width: 38%;
         height: 30px;
         margin-left: 10px;
     }
@@ -168,8 +176,8 @@
 @media only screen and (min-width: 2560px) {
 
     .search-bars-container{
-        width: 20%;
-        height: 40%;
+        width: 25%;
+        margin-top: 50;
     }
 
     .icon-info{
@@ -177,15 +185,13 @@
     }
 
     .search-button{
-        width: 25%;
+        width: 35%;
         height: 30px;
-        margin-right: 10px;
     }
     
     .advanced-search-button {
-        width: 30%;
+        width: 45%;
         height: 30px;
-        margin-left: 10px;
     }
 
 }

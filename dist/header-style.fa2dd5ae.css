@@ -1,10 +1,9 @@
 .logo-container {
   display: flex;
-  align-self: flex-start;
-  align-items: flex-start;
+  align-self: center;
+  align-items: center;
   justify-content: space-around;
   width: 100%;
-  background-color: #fff;
 }
 .logo-container .page-logo {
   width: 95%;
@@ -44,10 +43,10 @@
 /* 4K */
 @media only screen and (min-width: 2560px) {
   .logo-container {
-    width: 70%;
+    width: 80%;
   }
   .logo-container .page-logo {
-    width: 60%;
+    width: 70%;
     height: 200px;
   }
 }

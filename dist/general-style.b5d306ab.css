@@ -16,9 +16,8 @@ body {
   align-items: center;
   justify-content: space-around;
   flex-direction: column;
-  height: 100%;
   width: 100%;
-  background-color: red;
+  height: fit-content;
 }
 
 .page-footer {
