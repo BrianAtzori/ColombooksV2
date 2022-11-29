@@ -130,6 +130,9 @@ contentPage.addEventListener("click", function (event) {
             alert(
               "Wait! You haven't entered anything to search the archive.\nFill in one of the fields to perform a search."
             );
+          }
+          if (genreToSearchInput.value === " ") {
+            alert("Wait! Blank spaces are not allowed in genre search.");
           } else {
             loadingAnimation.style.display = "block";
 

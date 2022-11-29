@@ -29,6 +29,8 @@ function createUrl(queryFields, userQuery) {
 //Fetch Request to API, searching by genre
 
 export async function findBookByGenre(genre) {
+  genre = genre.replaceAll(" ", "_");
+
   axios({
     method: "get",
 
