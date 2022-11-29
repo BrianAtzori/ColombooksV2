@@ -99,122 +99,117 @@ contentPage.addEventListener("click", function (event) {
       genreToSearchInput.value = "";
 
       break;
+  }
+});
 
-    case searchButton:
-      //Check if another search has been done, then empty the showcase to clean
+document.forms[0].addEventListener("submit", (e) => {
+  e.preventDefault()
+  //Check if another search has been done, then empty the showcase to clean
 
-      if (
-        showcase.contains(document.querySelector(".book-container")) ||
-        showcase.contains(document.querySelector("h2"))
-      ) {
-        emptyTheShowcase();
+  if (
+    showcase.contains(document.querySelector(".book-container")) ||
+    showcase.contains(document.querySelector("h2"))
+  ) {
+    emptyTheShowcase();
+  }
+
+  //Create search label for UX
+
+  let searchLabel = document.createElement("h2");
+
+  //Set type of search
+
+  let typeOfSearch = advancedSearchFieldsContainer.classList.contains("active")
+    ? advancedSearchAuthorInput.value === ""
+      ? (typeOfSearch = "title")
+      : (typeOfSearch = "author")
+    : (typeOfSearch = "genre");
+
+  switch (typeOfSearch) {
+    case "genre":
+      if (genreToSearchInput.value === "") {
+        alert(
+          "Wait! You haven't entered anything to search the archive.\nFill in one of the fields to perform a search."
+        );
+      }
+      if (genreToSearchInput.value === " ") {
+        alert("Wait! Blank spaces are not allowed in genre search.");
+      } else {
+        loadingAnimation.style.display = "block";
+
+        searchLabel.innerText =
+          "Search results for the genre: " + genreToSearchInput.value;
+
+        showcase.appendChild(searchLabel);
+
+        searchLabel.parentNode.insertBefore(
+          loadingAnimation,
+          searchLabel.nextSibling
+        );
+
+        externalCalls.findBookByGenre(genreToSearchInput.value.toLowerCase());
+
+        genreToSearchInput.value = "";
       }
 
-      //Create search label for UX
+      break;
 
-      let searchLabel = document.createElement("h2");
+    case "title":
+      if (advancedSearchTitleInput.value === "") {
+        alert(
+          "Wait! You haven't entered anything to search the archive.\nFill in one of the fields to perform a search."
+        );
+      } else {
+        loadingAnimation.style.display = "block";
 
-      //Set type of search
+        searchLabel.innerText =
+          "Search results for the title: " + advancedSearchTitleInput.value;
 
-      let typeOfSearch = advancedSearchFieldsContainer.classList.contains(
-        "active"
-      )
-        ? advancedSearchAuthorInput.value === ""
-          ? (typeOfSearch = "title")
-          : (typeOfSearch = "author")
-        : (typeOfSearch = "genre");
+        showcase.appendChild(searchLabel);
 
-      switch (typeOfSearch) {
-        case "genre":
-          if (genreToSearchInput.value === "") {
-            alert(
-              "Wait! You haven't entered anything to search the archive.\nFill in one of the fields to perform a search."
-            );
-          }
-          if (genreToSearchInput.value === " ") {
-            alert("Wait! Blank spaces are not allowed in genre search.");
-          } else {
-            loadingAnimation.style.display = "block";
+        searchLabel.parentNode.insertBefore(
+          loadingAnimation,
+          searchLabel.nextSibling
+        );
 
-            searchLabel.innerText =
-              "Search results for the genre: " + genreToSearchInput.value;
+        externalCalls.findBookByTitle(advancedSearchTitleInput.value);
 
-            showcase.appendChild(searchLabel);
-
-            searchLabel.parentNode.insertBefore(
-              loadingAnimation,
-              searchLabel.nextSibling
-            );
-
-            externalCalls.findBookByGenre(
-              genreToSearchInput.value.toLowerCase()
-            );
-
-            genreToSearchInput.value = "";
-          }
-
-          break;
-
-        case "title":
-          if (advancedSearchTitleInput.value === "") {
-            alert(
-              "Wait! You haven't entered anything to search the archive.\nFill in one of the fields to perform a search."
-            );
-          } else {
-            loadingAnimation.style.display = "block";
-
-            searchLabel.innerText =
-              "Search results for the title: " + advancedSearchTitleInput.value;
-
-            showcase.appendChild(searchLabel);
-
-            searchLabel.parentNode.insertBefore(
-              loadingAnimation,
-              searchLabel.nextSibling
-            );
-
-            externalCalls.findBookByTitle(advancedSearchTitleInput.value);
-
-            advancedSearchTitleInput.value = "";
-          }
-
-          break;
-
-        case "author":
-          if (advancedSearchAuthorInput.value === "") {
-            alert(
-              "Wait! You haven't entered anything to search the archive.\nFill in one of the fields to perform a search."
-            );
-          } else {
-            loadingAnimation.style.display = "block";
-
-            searchLabel.innerText =
-              "Search results for the author: " +
-              advancedSearchAuthorInput.value;
-
-            showcase.appendChild(searchLabel);
-
-            //https://attacomsian.com/blog/javascript-insert-element-after
-
-            searchLabel.parentNode.insertBefore(
-              loadingAnimation,
-              searchLabel.nextSibling
-            );
-
-            externalCalls.findAuthorKey(advancedSearchAuthorInput.value);
-
-            advancedSearchAuthorInput.value = "";
-          }
-
-          break;
-
-        default:
-          alert(
-            "Wait! You haven't entered anything to search the archive.\nFill in one of the fields to perform a search."
-          );
-
-          break;
+        advancedSearchTitleInput.value = "";
       }
+
+      break;
+
+    case "author":
+      if (advancedSearchAuthorInput.value === "") {
+        alert(
+          "Wait! You haven't entered anything to search the archive.\nFill in one of the fields to perform a search."
+        );
+      } else {
+        loadingAnimation.style.display = "block";
+
+        searchLabel.innerText =
+          "Search results for the author: " + advancedSearchAuthorInput.value;
+
+        showcase.appendChild(searchLabel);
+
+        //https://attacomsian.com/blog/javascript-insert-element-after
+
+        searchLabel.parentNode.insertBefore(
+          loadingAnimation,
+          searchLabel.nextSibling
+        );
+
+        externalCalls.findAuthorKey(advancedSearchAuthorInput.value);
+
+        advancedSearchAuthorInput.value = "";
+      }
+
+      break;
+
+    default:
+      alert(
+        "Wait! You haven't entered anything to search the archive.\nFill in one of the fields to perform a search."
+      );
 
       break;
   }
