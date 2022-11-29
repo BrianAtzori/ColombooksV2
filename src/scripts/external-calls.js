@@ -1,120 +1,117 @@
 //--------- IMPORTS ---------
 
-import * as dataManager from './data-manager';
+import * as dataManager from "./data-manager";
 
-import * as popUpManager from './pop-ups.js';
+import * as popUpManager from "./pop-ups.js";
 
-import * as showcaseGenerator from './showcase-generator'
-
+import * as showcaseGenerator from "./showcase-generator";
 
 //--------- DECLARATIONS ---------
 
-require('dotenv').config();
+require("dotenv").config();
 
-const axios = require('axios').default;
+const axios = require("axios").default;
 
-const loadingAnimationRunning = document.querySelector('.loading-animation')
-
+const loadingAnimationRunning = document.querySelector(".loading-animation");
 
 //--------- FUNCTIONS ---------
 
 //Generate URLs to fetch
 
-function createUrl(queryFields, userQuery)
-{
-    let queryUrl = process.env.BASE_URL+queryFields+userQuery
+function createUrl(queryFields, userQuery) {
+  let queryUrl = process.env.BASE_URL + queryFields + userQuery;
 
-    console.log(queryUrl)
+  console.log(queryUrl);
 
-    return queryUrl
+  return queryUrl;
 }
 
 //Fetch Request to API, searching by genre
 
-export async function findBookByGenre(genre){
-    
-    axios({
+export async function findBookByGenre(genre) {
+  axios({
+    method: "get",
 
-        method: 'get',
-
-        url: createUrl("/subjects/",genre+".json")
-
-    })
-    .then((response) => dataManager.generateBooksCollection(response.data,"byGenre"))
-
-    .finally(() => loadingAnimationRunning.style.display="none")
-
-    .catch(err => alert("Oh no! Something went wrong, contact me with these error details:\n" + err))
-
+    url: createUrl("/subjects/", genre + ".json"),
+  })
+    .then((response) =>
+      dataManager.generateBooksCollection(response.data, "byGenre")
+    )
+    .finally(() => (loadingAnimationRunning.style.display = "none"))
+    .catch((err) =>
+      alert(
+        "Oh no! Something went wrong, contact me with these error details:\n" +
+          err
+      )
+    );
 }
 
 //Fetch Request to API, searching by Author
 
-export async function findBookByAuthor(key,author){
-    
-    axios({
+export async function findBookByAuthor(key, author) {
+  axios({
+    method: "get",
 
-        method: 'get',
-
-        url: createUrl("/authors/",key+"/works.json")
-    })
-
-    .then((response) => dataManager.generateBooksCollection(response.data,"byAuthor",author))
-
-    .finally(() => loadingAnimationRunning.style.display="none")
-
-    .catch(err => alert("Oh no! Something went wrong, contact me with these error details:\n" + err))
-
+    url: createUrl("/authors/", key + "/works.json"),
+  })
+    .then((response) =>
+      dataManager.generateBooksCollection(response.data, "byAuthor", author)
+    )
+    .finally(() => (loadingAnimationRunning.style.display = "none"))
+    .catch((err) =>
+      alert(
+        "Oh no! Something went wrong, contact me with these error details:\n" +
+          err
+      )
+    );
 }
 
 //Fetch Request to API, searching by Title
 
-export async function findBookByTitle(title){
+export async function findBookByTitle(title) {
+  axios({
+    method: "get",
 
-    axios({
-
-        method: 'get',
-        
-        url: createUrl("/search.json?q=",title)
-
-    })
-
-    .then((response) => dataManager.generateBooksCollection(response.data,"byTitle"))
-
-    .finally(() => loadingAnimationRunning.style.display="none")
-
-    .catch(err => alert("Oh no! Something went wrong, contact me with these error details:\n" + err))
-    
+    url: createUrl("/search.json?q=", title),
+  })
+    .then((response) =>
+      dataManager.generateBooksCollection(response.data, "byTitle")
+    )
+    .finally(() => (loadingAnimationRunning.style.display = "none"))
+    .catch((err) =>
+      alert(
+        "Oh no! Something went wrong, contact me with these error details:\n" +
+          err
+      )
+    );
 }
 
 //Fetch the Description of the book and call the popup to show the text
 
-export async function fetchBookDescription(bookKey)
-{
-    axios({
-        method: 'get',
-        url: createUrl("/",bookKey.substring(1)+".json")
-    })
-
+export async function fetchBookDescription(bookKey) {
+  axios({
+    method: "get",
+    url: createUrl("/", bookKey.substring(1) + ".json"),
+  })
     .then((response) => response.data.description)
-
-    .then((description) =>  popUpManager.generatePopUp("details",description))
-
-    .catch(err => alert("Oh no! Something went wrong, contact me with these error details:\n" + err))
-
+    .then((description) => popUpManager.generatePopUp("details", description))
+    .catch((err) =>
+      alert(
+        "Oh no! Something went wrong, contact me with these error details:\n" +
+          err
+      )
+    );
 }
 
 //Auxiliary function to retrieve the author key and the name for the output
 
-export async function findAuthorKey(author){
-
-    axios({
-        method: 'get',
-        url: createUrl("/search/","authors.json?q="+author)
-    })
-
-    .then((response) => findBookByAuthor(response.data.docs[0].key,response.data.docs[0].name))
-
-    .catch(err => showcaseGenerator.generateBlankShowcase())
-
+export async function findAuthorKey(author) {
+  axios({
+    method: "get",
+    url: createUrl("/search/", "authors.json?q=" + author),
+  })
+    .then((response) =>
+      findBookByAuthor(response.data.docs[0].key, response.data.docs[0].name)
+    )
+    .catch((err) => showcaseGenerator.generateBlankShowcase());
 }

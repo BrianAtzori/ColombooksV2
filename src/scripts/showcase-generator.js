@@ -1,150 +1,127 @@
 //--------- IMPORTS ---------
 
-import { showDetails } from "./showcase-manager"
-
+import { showDetails } from "./showcase-manager";
 
 //--------- ELEMENTS ---------
 
-const booksShowcaseDiv = document.querySelector('.books-showcase')
-
+const booksShowcaseDiv = document.querySelector(".books-showcase");
 
 //--------- FUNCTIONS ---------
 
 //Go through the Array of Books and append a new generated UI container
 
-export function generateNewBooksShowcase(booksCollection)
-{
+export function generateNewBooksShowcase(booksCollection) {
+  for (let i = 0; i < booksCollection.length; i++) {
+    let newBookContainer = generateBookContainer(booksCollection[i]);
 
-    for (let i=0; i<booksCollection.length; i++){
-
-        let newBookContainer=generateBookContainer(booksCollection[i])
-
-        booksShowcaseDiv.appendChild(newBookContainer)
-
-    }
-   
+    booksShowcaseDiv.appendChild(newBookContainer);
+  }
 }
 
 //Generate new UI Container for a book using auxiliary functions to create HTML Elements
 
-export function generateBookContainer(Book)
-{
-    
-    const elementsArray =[]
+export function generateBookContainer(Book) {
+  const elementsArray = [];
 
-    let newBookContainer=document.createElement('div')
+  let newBookContainer = document.createElement("div");
 
-    newBookContainer.classList.add('book-container')
+  newBookContainer.classList.add("book-container");
 
-    //This can be done with only one function, maybe creating classes
+  //This can be done with only one function, maybe creating classes
 
-    let newBookCover = generateNewCoverElement(Book.retrieveCover(), Book.title, Book.author) //Retrieve the cover with the method of the Book Class
+  let newBookCover = generateNewCoverElement(
+    Book.retrieveCover(),
+    Book.title,
+    Book.author
+  ); //Retrieve the cover with the method of the Book Class
 
-    elementsArray.push(newBookCover)
+  elementsArray.push(newBookCover);
 
-    let newBookTitle = generateNewTitleElement(Book.title)
+  let newBookTitle = generateNewTitleElement(Book.title);
 
-    elementsArray.push(newBookTitle)
+  elementsArray.push(newBookTitle);
 
-    let newAuthorLabel = generateNewAuthorElement(Book.author)
+  let newAuthorLabel = generateNewAuthorElement(Book.author);
 
-    elementsArray.push(newAuthorLabel)
+  elementsArray.push(newAuthorLabel);
 
-    let newDetailsButton = generateNewDetailsButtonElement(Book.key)
+  let newDetailsButton = generateNewDetailsButtonElement(Book.key);
 
-    elementsArray.push(newDetailsButton)
+  elementsArray.push(newDetailsButton);
 
-    for (let i=0; i<elementsArray.length; i++){
+  for (let i = 0; i < elementsArray.length; i++) {
+    newBookContainer.appendChild(elementsArray[i]);
+  }
 
-        newBookContainer.appendChild(elementsArray[i])
-
-    }
-
-    return newBookContainer
-
+  return newBookContainer;
 }
 
 //Generate HTML Elements
 
-export function generateNewCoverElement(coverUrl, title, author)
-{
+export function generateNewCoverElement(coverUrl, title, author) {
+  let generatedBookCover = document.createElement("img");
 
-    let generatedBookCover = document.createElement("img")
+  generatedBookCover.classList.add("book-cover");
 
-    generatedBookCover.classList.add('book-cover')
+  generatedBookCover.src = coverUrl;
 
-    generatedBookCover.src = coverUrl
+  generatedBookCover.style = "width: 80px; height: 100px;";
 
-    generatedBookCover.style = "width: 80px; height: 100px;"
+  //Dynamically generated alt for accessibility
 
-    //Dynamically generated alt for accessibility
+  generatedBookCover.alt =
+    "Cover of the book " + title + " written by " + author;
 
-    generatedBookCover.alt ="Cover of the book "+title+" written by "+author
-
-    return generatedBookCover
-
+  return generatedBookCover;
 }
 
-export function generateNewTitleElement(title)
-{
+export function generateNewTitleElement(title) {
+  let generatedBookTitle = document.createElement("p");
 
-    let generatedBookTitle = document.createElement('p')
+  generatedBookTitle.classList.add("title-label");
 
-    generatedBookTitle.classList.add('title-label')
+  generatedBookTitle.innerText = '"' + title + '"';
 
-    generatedBookTitle.innerText="\""+title+"\""
-
-    return generatedBookTitle
-
+  return generatedBookTitle;
 }
 
-export function generateNewAuthorElement(author)
-{
+export function generateNewAuthorElement(author) {
+  let generatedBookAuthor = document.createElement("p");
 
-    let generatedBookAuthor = document.createElement('p')
+  generatedBookAuthor.classList.add("author-label");
 
-    generatedBookAuthor.classList.add('author-label')
+  generatedBookAuthor.innerText = author;
 
-    generatedBookAuthor.innerText=author
-
-    return generatedBookAuthor
-
+  return generatedBookAuthor;
 }
 
-export function generateNewDetailsButtonElement(bookKey)
-{
+export function generateNewDetailsButtonElement(bookKey) {
+  let generatedDetailsButton = document.createElement("input");
 
-    let generatedDetailsButton = document.createElement('input')
+  generatedDetailsButton.type = "button";
 
-    generatedDetailsButton.type = 'button'
+  generatedDetailsButton.value = "Details";
 
-    generatedDetailsButton.value = 'Details'
+  generatedDetailsButton.classList.add("expand-details-button");
 
-    generatedDetailsButton.classList.add('expand-details-button')
+  generatedDetailsButton.setAttribute("data-relatedbookkey", bookKey);
 
-    generatedDetailsButton.setAttribute("data-relatedbookkey",bookKey)
+  //Add a dynamic event listener that trigger the popup generation with book description click > book key > show details > retrieve description > show popup
 
-    //Add a dynamic event listener that trigger the popup generation with book description click > book key > show details > retrieve description > show popup
+  generatedDetailsButton.addEventListener("click", function (event) {
+    const detailsButtonClicked = event.target;
 
-    generatedDetailsButton.addEventListener('click', function(event) {
+    showDetails(detailsButtonClicked.getAttribute("data-relatedbookkey"));
+  });
 
-        const detailsButtonClicked = event.target;
-
-        showDetails(detailsButtonClicked.getAttribute('data-relatedbookkey'))
-
-    })
-
-    return generatedDetailsButton
-
+  return generatedDetailsButton;
 }
 
-export function generateBlankShowcase()
-{
+export function generateBlankShowcase() {
+  let blankLabel = document.createElement("h2");
 
-    let blankLabel = document.createElement('h2')
+  blankLabel.innerText =
+    "There are no books matching the parameters! Try with something else :(";
 
-    blankLabel.innerText = "There are no books matching the parameters! Try with something else :("
-
-    booksShowcaseDiv.appendChild(blankLabel)
-
+  booksShowcaseDiv.appendChild(blankLabel);
 }
