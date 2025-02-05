@@ -19,8 +19,8 @@
   },
   "homepage": "https://github.com/BrianAtzori/ColombooksV2#readme",
   "devDependencies": {
-    "cssnano": "^4.1.11",
-    "postcss": "^8.4.19",
+    "cssnano": "^7.0.6",
+    "postcss": "^8.5.1",
     "sass": "^1.55.0"
   },
   "dependencies": {
